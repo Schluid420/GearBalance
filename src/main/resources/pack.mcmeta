@@ -1,0 +1,18 @@
+{
+  "pack": {
+    "description": "GearBalance",
+    "min_format": 97,
+    "max_format": 121
+  },
+  "fabric:overlays": {
+    "entries": [
+      {
+        "directory": "gearbalance_rabbit_armor",
+        "condition": {
+          "condition": "gearbalance:option",
+          "option": "rabbit_hide_armor"
+        }
+      }
+    ]
+  }
+}

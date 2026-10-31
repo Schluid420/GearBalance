@@ -1,0 +1,12 @@
+{
+	"required": true,
+	"package": "io.github.schluid.gearbalance.client.mixin",
+	"compatibilityLevel": "JAVA_25",
+	"client": [
+		"AbstractClientPlayerMixin",
+		"AnvilScreenMixin"
+	],
+	"injectors": {
+		"defaultRequire": 1
+	}
+}

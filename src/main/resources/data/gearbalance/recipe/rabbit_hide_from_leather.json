@@ -1,0 +1,15 @@
+{
+  "fabric:load_conditions": {
+    "condition": "gearbalance:option",
+    "option": "rabbit_hide_recipe"
+  },
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "minecraft:leather"
+  ],
+  "result": {
+    "id": "minecraft:rabbit_hide",
+    "count": 4
+  }
+}

@@ -1,0 +1,13 @@
+{
+	"required": true,
+	"package": "io.github.schluid.gearbalance.mixin",
+	"compatibilityLevel": "JAVA_25",
+	"mixins": [
+		"AnvilMenuMixin",
+		"ItemStackMixin",
+		"PlayerMixin"
+	],
+	"injectors": {
+		"defaultRequire": 1
+	}
+}
