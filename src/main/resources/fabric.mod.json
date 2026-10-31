@@ -3,14 +3,14 @@
 	"id": "gearbalance",
 	"version": "${version}",
 	"name": "GearBalance",
-	"description": "Set the values of every vanilla tool, weapon and armor piece, with level requirements, armor weight, set bonuses, endgame loot and ready-made presets. Free on Modrinth.",
+	"description": "Set the values of every vanilla tool, weapon and armor piece, with level requirements, armor weight, set bonuses, endgame loot and ready-made presets. Free on CurseForge and GitHub.",
 	"icon": "assets/gearbalance/icon.png",
 	"authors": [
 		"Schluid"
 	],
 	"license": "All-Rights-Reserved",
 	"contact": {
-		"homepage": "https://modrinth.com/mod/gearbalance",
+		"homepage": "https://www.curseforge.com/minecraft/mc-mods/gearbalance",
 		"sources": "https://github.com/Schluid420/GearBalance",
 		"issues": "https://github.com/Schluid420/GearBalance/issues"
 	},

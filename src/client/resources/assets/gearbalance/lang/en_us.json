@@ -214,5 +214,5 @@
   "gearbalance.reset.title": "Reset everything to vanilla?",
   "gearbalance.reset.message": "All changed values and level requirements are removed. Saved profiles are kept.",
   "gearbalance.welcome.title": "GearBalance is free",
-  "gearbalance.welcome.message": "Official download only on Modrinth."
+  "gearbalance.welcome.message": "Official downloads only on CurseForge and GitHub."
 }
