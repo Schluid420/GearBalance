@@ -1,0 +1,41 @@
+{
+  "parent": "gearbalance:root",
+  "criteria": {
+    "got": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "gearbalance:compressed_leather",
+              "gearbalance:compressed_copper_ingot",
+              "gearbalance:compressed_chain",
+              "gearbalance:compressed_iron_ingot",
+              "gearbalance:compressed_gold_ingot",
+              "gearbalance:compressed_diamond",
+              "gearbalance:compressed_netherite_ingot",
+              "gearbalance:compressed_phantom_membrane",
+              "gearbalance:compressed_titanium_ingot"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "display": {
+    "icon": {
+      "id": "gearbalance:compressed_iron_ingot"
+    },
+    "title": {
+      "translate": "advancements.gearbalance.compressed.title"
+    },
+    "description": {
+      "translate": "advancements.gearbalance.compressed.description"
+    }
+  },
+  "requirements": [
+    [
+      "got"
+    ]
+  ]
+}

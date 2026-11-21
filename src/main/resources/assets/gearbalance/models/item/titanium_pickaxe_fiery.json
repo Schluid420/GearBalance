@@ -1,0 +1,107 @@
+{
+  "parent": "gearbalance:item/titanium_pickaxe",
+  "textures": {
+    "flame": "gearbalance:item/titanium_pickaxe_fiery",
+    "core": "gearbalance:item/titanium_pickaxe_fiery_core"
+  },
+  "elements": [
+    {
+      "from": [
+        -8,
+        -8,
+        8.6
+      ],
+      "to": [
+        24,
+        24,
+        8.6
+      ],
+      "light_emission": 15,
+      "faces": {
+        "south": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#flame",
+          "tintindex": 0
+        }
+      }
+    },
+    {
+      "from": [
+        -8,
+        -8,
+        7.4
+      ],
+      "to": [
+        24,
+        24,
+        7.4
+      ],
+      "light_emission": 15,
+      "faces": {
+        "north": {
+          "uv": [
+            16,
+            0,
+            0,
+            16
+          ],
+          "texture": "#flame",
+          "tintindex": 0
+        }
+      }
+    },
+    {
+      "from": [
+        -8,
+        -8,
+        8.65
+      ],
+      "to": [
+        24,
+        24,
+        8.65
+      ],
+      "light_emission": 15,
+      "faces": {
+        "south": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#core"
+        }
+      }
+    },
+    {
+      "from": [
+        -8,
+        -8,
+        7.35
+      ],
+      "to": [
+        24,
+        24,
+        7.35
+      ],
+      "light_emission": 15,
+      "faces": {
+        "north": {
+          "uv": [
+            16,
+            0,
+            0,
+            16
+          ],
+          "texture": "#core"
+        }
+      }
+    }
+  ]
+}

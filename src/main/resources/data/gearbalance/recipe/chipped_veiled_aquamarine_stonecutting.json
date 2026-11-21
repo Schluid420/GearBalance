@@ -1,0 +1,12 @@
+{
+  "fabric:load_conditions": {
+    "condition": "gearbalance:option",
+    "option": "sockets"
+  },
+  "type": "minecraft:stonecutting",
+  "ingredient": "gearbalance:aquamarine",
+  "result": {
+    "count": 1,
+    "id": "gearbalance:chipped_veiled_aquamarine"
+  }
+}

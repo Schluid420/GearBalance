@@ -1,0 +1,17 @@
+{
+  "fabric:load_conditions": {
+    "condition": "gearbalance:option",
+    "option": "sockets"
+  },
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "gearbalance:cut_deep_aquamarine",
+    "gearbalance:cut_deep_aquamarine",
+    "gearbalance:cut_deep_aquamarine"
+  ],
+  "result": {
+    "count": 1,
+    "id": "gearbalance:flawless_deep_aquamarine"
+  }
+}

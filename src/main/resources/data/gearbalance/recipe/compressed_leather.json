@@ -1,0 +1,19 @@
+{
+  "fabric:load_conditions": {
+    "condition": "gearbalance:option",
+    "option": "compressed"
+  },
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "###",
+    "# #",
+    "###"
+  ],
+  "key": {
+    "#": "minecraft:leather"
+  },
+  "result": {
+    "id": "gearbalance:compressed_leather"
+  }
+}

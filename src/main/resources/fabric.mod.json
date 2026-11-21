@@ -3,7 +3,7 @@
 	"id": "gearbalance",
 	"version": "${version}",
 	"name": "GearBalance",
-	"description": "Set the values of every vanilla tool, weapon and armor piece, with level requirements, armor weight, set bonuses, endgame loot and ready-made presets. Free on CurseForge and GitHub.",
+	"description": "Set the values of every vanilla tool, weapon and armor piece, with level requirements, armor weight, set bonuses, endgame loot and ready-made presets. Smithing with upgrades and gem sockets, tailoring with padded armor and bags, new shields with parrying, titanium as endgame material, a glow for fully socketed gear and comfort, death, spawner and HUD options, each with its own switch. Free on CurseForge and GitHub.",
 	"icon": "assets/gearbalance/icon.png",
 	"authors": [
 		"Schluid"
@@ -24,6 +24,9 @@
 		],
 		"modmenu": [
 			"io.github.schluid.gearbalance.client.ModMenuIntegration"
+		],
+		"jei_mod_plugin": [
+			"io.github.schluid.gearbalance.client.compat.GearBalanceJeiPlugin"
 		]
 	},
 	"mixins": [
@@ -34,12 +37,13 @@
 		}
 	],
 	"depends": {
-		"fabricloader": ">=0.19.2",
+		"fabricloader": ">=0.20.1",
 		"minecraft": "~26.3",
 		"java": ">=25",
 		"fabric-api": "*"
 	},
 	"suggests": {
-		"modmenu": "*"
+		"modmenu": "*",
+		"jei": "*"
 	}
 }

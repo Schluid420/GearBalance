@@ -1,0 +1,12 @@
+{
+  "fabric:load_conditions": {
+    "condition": "gearbalance:option",
+    "option": "gem_recut"
+  },
+  "type": "minecraft:stonecutting",
+  "ingredient": "#gearbalance:gems/chipped_onyx",
+  "result": {
+    "count": 1,
+    "id": "gearbalance:chipped_deadly_onyx"
+  }
+}

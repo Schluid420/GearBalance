@@ -1,0 +1,21 @@
+{
+  "fabric:load_conditions": {
+    "condition": "gearbalance:option",
+    "option": "gem_lever_with_plan"
+  },
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "pattern": [
+    "P C",
+    " I ",
+    "I  "
+  ],
+  "key": {
+    "C": "minecraft:diamond_block",
+    "I": "minecraft:iron_ingot",
+    "P": "gearbalance:master_smithing_plan"
+  },
+  "result": {
+    "id": "gearbalance:diamond_gem_lever"
+  }
+}

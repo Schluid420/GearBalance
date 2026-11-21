@@ -1,0 +1,12 @@
+{
+  "replace": false,
+  "values": [
+    "gearbalance:chipped_durable_sapphire",
+    "gearbalance:chipped_lustrous_sapphire",
+    "gearbalance:chipped_misty_sapphire",
+    "gearbalance:chipped_stalwart_sapphire",
+    "gearbalance:chipped_steady_sapphire",
+    "gearbalance:chipped_stormy_sapphire",
+    "gearbalance:chipped_thick_sapphire"
+  ]
+}

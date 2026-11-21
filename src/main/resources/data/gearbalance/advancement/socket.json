@@ -1,0 +1,24 @@
+{
+  "parent": "gearbalance:socket_chisel",
+  "criteria": {
+    "done": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "icon": {
+      "id": "minecraft:amethyst_shard"
+    },
+    "title": {
+      "translate": "advancements.gearbalance.socket.title"
+    },
+    "description": {
+      "translate": "advancements.gearbalance.socket.description"
+    }
+  },
+  "requirements": [
+    [
+      "done"
+    ]
+  ]
+}

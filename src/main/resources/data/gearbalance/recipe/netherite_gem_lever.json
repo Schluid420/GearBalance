@@ -1,0 +1,13 @@
+{
+  "fabric:load_conditions": {
+    "condition": "gearbalance:option",
+    "option": "gem_lever"
+  },
+  "type": "minecraft:smithing_transform",
+  "template": "minecraft:netherite_upgrade_smithing_template",
+  "base": "gearbalance:diamond_gem_lever",
+  "addition": "minecraft:netherite_ingot",
+  "result": {
+    "id": "gearbalance:netherite_gem_lever"
+  }
+}

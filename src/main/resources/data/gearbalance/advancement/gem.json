@@ -1,0 +1,24 @@
+{
+  "parent": "gearbalance:socket",
+  "criteria": {
+    "done": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "icon": {
+      "id": "gearbalance:cut_bold_ruby"
+    },
+    "title": {
+      "translate": "advancements.gearbalance.gem.title"
+    },
+    "description": {
+      "translate": "advancements.gearbalance.gem.description"
+    }
+  },
+  "requirements": [
+    [
+      "done"
+    ]
+  ]
+}

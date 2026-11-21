@@ -1,9 +1,10 @@
 package io.github.schluid.gearbalance.bonus;
 
+import io.github.schluid.gearbalance.comfort.BreakProtection;
 import io.github.schluid.gearbalance.GearBalance;
 import io.github.schluid.gearbalance.config.GearConfig;
 import io.github.schluid.gearbalance.stats.Material;
-import java.util.EnumMap;
+import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
@@ -21,9 +22,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
 /**
- * Set bonuses: half the bonus from 2 worn pieces of one material, the full bonus with all 4.
- * Pieces of different materials each count for their own set. Checked twice a second on the server,
- * as one attribute modifier per material, so two half sets can be active at the same time.
+ * Set bonuses: half from 2 worn pieces of one material, full with 4. Each material counts as its own set.
+ * Checked twice a second on the server, one attribute modifier per material.
  */
 public final class SetBonus {
 	private SetBonus() {
@@ -53,10 +53,11 @@ public final class SetBonus {
 
 	/** Worn armor pieces per material. Also used by the client for the tooltip. */
 	public static Map<Material, Integer> wornPieces(Player player) {
-		Map<Material, Integer> pieces = new EnumMap<>(Material.class);
+		Map<Material, Integer> pieces = new LinkedHashMap<>();
 		for (EquipmentSlot slot : ARMOR_SLOTS) {
 			ItemStack stack = player.getItemBySlot(slot);
-			if (stack.isEmpty()) {
+			// Damaged pieces (break protection) don't count
+			if (stack.isEmpty() || BreakProtection.wornOut(stack)) {
 				continue;
 			}
 			Material material = Material.of(BuiltInRegistries.ITEM.getKey(stack.getItem()).toString());

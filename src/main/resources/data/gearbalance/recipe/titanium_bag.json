@@ -1,0 +1,22 @@
+{
+  "fabric:load_conditions": {
+    "condition": "fabric:and",
+    "values": [
+      {
+        "condition": "gearbalance:option",
+        "option": "titanium"
+      },
+      {
+        "condition": "gearbalance:option",
+        "option": "bags"
+      }
+    ]
+  },
+  "type": "minecraft:smithing_transform",
+  "template": "gearbalance:sewing_needle",
+  "base": "gearbalance:netherite_bag",
+  "addition": "gearbalance:titanium_ingot",
+  "result": {
+    "id": "gearbalance:titanium_bag"
+  }
+}

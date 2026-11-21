@@ -1,0 +1,17 @@
+{
+  "fabric:load_conditions": {
+    "condition": "gearbalance:option",
+    "option": "sockets"
+  },
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "gearbalance:cut_delicate_emerald",
+    "gearbalance:cut_delicate_emerald",
+    "gearbalance:cut_delicate_emerald"
+  ],
+  "result": {
+    "count": 1,
+    "id": "gearbalance:flawless_delicate_emerald"
+  }
+}

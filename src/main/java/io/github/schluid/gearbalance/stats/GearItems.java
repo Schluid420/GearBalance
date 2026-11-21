@@ -7,8 +7,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * All managed items with their vanilla values in 26.3 (damage and speed as tooltip totals).
- * The numbers are only used in the main menu, in a world the real values are read from the game.
+ * All managed items with vanilla values in 26.3 (damage and speed as tooltip totals; spears from Item.Properties.spear():
+ * damage 1 + material bonus, speed 1 / swing time). Only used in the main menu; in a world the real values are read.
  */
 public final class GearItems {
 	private GearItems() {
@@ -38,36 +38,43 @@ public final class GearItems {
 		add("wooden_axe", Kind.TOOL, new Values(59, 7, 0.8, 0, 0, 0, 0));
 		add("wooden_shovel", Kind.TOOL, new Values(59, 2.5, 1, 0, 0, 0, 0));
 		add("wooden_hoe", Kind.TOOL, new Values(59, 1, 1, 0, 0, 0, 0));
+		add("wooden_spear", Kind.WEAPON, new Values(59, 1, 1.538, 0, 0, 0, 0));
 		add("stone_sword", Kind.WEAPON, new Values(131, 5, 1.6, 0, 0, 0, 0));
 		add("stone_pickaxe", Kind.TOOL, new Values(131, 3, 1.2, 0, 0, 0, 0));
 		add("stone_axe", Kind.TOOL, new Values(131, 9, 0.8, 0, 0, 0, 0));
 		add("stone_shovel", Kind.TOOL, new Values(131, 3.5, 1, 0, 0, 0, 0));
 		add("stone_hoe", Kind.TOOL, new Values(131, 1, 2, 0, 0, 0, 0));
+		add("stone_spear", Kind.WEAPON, new Values(131, 2, 1.333, 0, 0, 0, 0));
 		add("copper_sword", Kind.WEAPON, new Values(190, 5, 1.6, 0, 0, 0, 0));
 		add("copper_pickaxe", Kind.TOOL, new Values(190, 3, 1.2, 0, 0, 0, 0));
 		add("copper_axe", Kind.TOOL, new Values(190, 9, 0.8, 0, 0, 0, 0));
 		add("copper_shovel", Kind.TOOL, new Values(190, 3.5, 1, 0, 0, 0, 0));
 		add("copper_hoe", Kind.TOOL, new Values(190, 1, 2, 0, 0, 0, 0));
+		add("copper_spear", Kind.WEAPON, new Values(190, 2, 1.176, 0, 0, 0, 0));
 		add("iron_sword", Kind.WEAPON, new Values(250, 6, 1.6, 0, 0, 0, 0));
 		add("iron_pickaxe", Kind.TOOL, new Values(250, 4, 1.2, 0, 0, 0, 0));
 		add("iron_axe", Kind.TOOL, new Values(250, 9, 0.9, 0, 0, 0, 0));
 		add("iron_shovel", Kind.TOOL, new Values(250, 4.5, 1, 0, 0, 0, 0));
 		add("iron_hoe", Kind.TOOL, new Values(250, 1, 3, 0, 0, 0, 0));
+		add("iron_spear", Kind.WEAPON, new Values(250, 3, 1.053, 0, 0, 0, 0));
 		add("golden_sword", Kind.WEAPON, new Values(32, 4, 1.6, 0, 0, 0, 0));
 		add("golden_pickaxe", Kind.TOOL, new Values(32, 2, 1.2, 0, 0, 0, 0));
 		add("golden_axe", Kind.TOOL, new Values(32, 7, 1, 0, 0, 0, 0));
 		add("golden_shovel", Kind.TOOL, new Values(32, 2.5, 1, 0, 0, 0, 0));
 		add("golden_hoe", Kind.TOOL, new Values(32, 1, 1, 0, 0, 0, 0));
+		add("golden_spear", Kind.WEAPON, new Values(32, 1, 1.053, 0, 0, 0, 0));
 		add("diamond_sword", Kind.WEAPON, new Values(1561, 7, 1.6, 0, 0, 0, 0));
 		add("diamond_pickaxe", Kind.TOOL, new Values(1561, 5, 1.2, 0, 0, 0, 0));
 		add("diamond_axe", Kind.TOOL, new Values(1561, 9, 1, 0, 0, 0, 0));
 		add("diamond_shovel", Kind.TOOL, new Values(1561, 5.5, 1, 0, 0, 0, 0));
 		add("diamond_hoe", Kind.TOOL, new Values(1561, 1, 4, 0, 0, 0, 0));
+		add("diamond_spear", Kind.WEAPON, new Values(1561, 4, 0.952, 0, 0, 0, 0));
 		add("netherite_sword", Kind.WEAPON, new Values(2031, 8, 1.6, 0, 0, 0, 0));
 		add("netherite_pickaxe", Kind.TOOL, new Values(2031, 6, 1.2, 0, 0, 0, 0));
 		add("netherite_axe", Kind.TOOL, new Values(2031, 10, 1, 0, 0, 0, 0));
 		add("netherite_shovel", Kind.TOOL, new Values(2031, 6.5, 1, 0, 0, 0, 0));
 		add("netherite_hoe", Kind.TOOL, new Values(2031, 1, 4, 0, 0, 0, 0));
+		add("netherite_spear", Kind.WEAPON, new Values(2031, 5, 0.87, 0, 0, 0, 0));
 		add("mace", Kind.WEAPON, new Values(500, 6, 0.6, 0, 0, 0, 0));
 		add("trident", Kind.WEAPON, new Values(250, 9, 1.1, 0, 0, 0, 0));
 		add("bow", Kind.OTHER, new Values(384, 0, 0, 0, 0, 0, 0));
@@ -113,6 +120,34 @@ public final class GearItems {
 	private static void add(String path, Kind kind, Values vanilla) {
 		String id = "minecraft:" + path;
 		BY_ID.put(id, new Entry(id, kind, vanilla));
+	}
+
+	/** Adds an add-on item after items of the same kind with an earlier or equal material (tabs stay sorted). Only called by GearBalanceApi. */
+	public static void register(String id, Kind kind, Values vanilla) {
+		if (BY_ID.containsKey(id)) {
+			throw new IllegalArgumentException("Item " + id + " is already registered");
+		}
+		List<Entry> list = new ArrayList<>(BY_ID.values());
+		int insertAt = list.size();
+		Material material = kind == Kind.OTHER ? null : Material.byPrefix(id);
+		if (material != null) {
+			int last = -1;
+			for (int i = 0; i < list.size(); i++) {
+				Entry other = list.get(i);
+				Material otherMaterial = other.kind() == kind ? Material.byPrefix(other.id()) : null;
+				if (otherMaterial != null && otherMaterial.position() <= material.position()) {
+					last = i;
+				}
+			}
+			if (last >= 0) {
+				insertAt = last + 1;
+			}
+		}
+		list.add(insertAt, new Entry(id, kind, vanilla));
+		BY_ID.clear();
+		for (Entry entry : list) {
+			BY_ID.put(entry.id(), entry);
+		}
 	}
 
 	public static List<Entry> all() {

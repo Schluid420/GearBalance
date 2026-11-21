@@ -1,0 +1,22 @@
+{
+  "fabric:load_conditions": {
+    "condition": "gearbalance:option",
+    "option": "titanium"
+  },
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "#S#",
+    "#C#",
+    "###"
+  ],
+  "key": {
+    "#": "minecraft:diamond",
+    "C": "gearbalance:titanium_ingot",
+    "S": "gearbalance:titanium_upgrade_smithing_template"
+  },
+  "result": {
+    "count": 2,
+    "id": "gearbalance:titanium_upgrade_smithing_template"
+  }
+}

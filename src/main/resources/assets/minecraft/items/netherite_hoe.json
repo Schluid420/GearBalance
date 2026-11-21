@@ -1,0 +1,126 @@
+{
+  "model": {
+    "type": "minecraft:select",
+    "property": "minecraft:display_context",
+    "cases": [
+      {
+        "when": [
+          "firstperson_righthand",
+          "firstperson_lefthand",
+          "thirdperson_righthand",
+          "thirdperson_lefthand"
+        ],
+        "model": {
+          "type": "minecraft:select",
+          "property": "gearbalance:hand_effect",
+          "cases": [
+            {
+              "when": [
+                "off"
+              ],
+              "model": {
+                "type": "minecraft:model",
+                "model": "minecraft:item/netherite_hoe"
+              }
+            },
+            {
+              "when": [
+                "flames"
+              ],
+              "model": {
+                "type": "minecraft:composite",
+                "models": [
+                  {
+                    "type": "minecraft:model",
+                    "model": "gearbalance:item/outlined/netherite_hoe",
+                    "tints": [
+                      {
+                        "type": "minecraft:constant",
+                        "value": -1
+                      },
+                      {
+                        "type": "gearbalance:ring_color"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "minecraft:model",
+                    "model": "gearbalance:item/netherite_hoe_fiery",
+                    "tints": [
+                      {
+                        "type": "gearbalance:effect_color"
+                      }
+                    ]
+                  }
+                ]
+              }
+            },
+            {
+              "when": [
+                "shadow"
+              ],
+              "model": {
+                "type": "minecraft:composite",
+                "models": [
+                  {
+                    "type": "minecraft:model",
+                    "model": "gearbalance:item/outlined/netherite_hoe",
+                    "tints": [
+                      {
+                        "type": "minecraft:constant",
+                        "value": -1
+                      },
+                      {
+                        "type": "gearbalance:ring_color"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "minecraft:model",
+                    "model": "gearbalance:item/netherite_hoe_shadow",
+                    "tints": [
+                      {
+                        "type": "gearbalance:effect_color"
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ],
+          "fallback": {
+            "type": "minecraft:composite",
+            "models": [
+              {
+                "type": "minecraft:model",
+                "model": "gearbalance:item/outlined/netherite_hoe",
+                "tints": [
+                  {
+                    "type": "minecraft:constant",
+                    "value": -1
+                  },
+                  {
+                    "type": "gearbalance:ring_color"
+                  }
+                ]
+              },
+              {
+                "type": "minecraft:model",
+                "model": "gearbalance:item/glow/netherite_hoe",
+                "tints": [
+                  {
+                    "type": "gearbalance:glow_color"
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      }
+    ],
+    "fallback": {
+      "type": "minecraft:model",
+      "model": "minecraft:item/netherite_hoe"
+    }
+  }
+}

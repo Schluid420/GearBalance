@@ -1,0 +1,21 @@
+{
+  "fabric:load_conditions": {
+    "condition": "gearbalance:option",
+    "option": "repair_kit_without_plan"
+  },
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "pattern": [
+    "DND",
+    "NHN",
+    "DND"
+  ],
+  "key": {
+    "D": "minecraft:diamond",
+    "N": "minecraft:netherite_ingot",
+    "H": "gearbalance:diamond_forge_hammer"
+  },
+  "result": {
+    "id": "gearbalance:netherite_repair_kit"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "fabric:load_conditions": {
+    "condition": "gearbalance:option",
+    "option": "bags"
+  },
+  "type": "minecraft:smithing_transform",
+  "template": "gearbalance:sewing_needle",
+  "base": "gearbalance:golden_bag",
+  "addition": "minecraft:diamond_block",
+  "result": {
+    "id": "gearbalance:diamond_bag"
+  }
+}

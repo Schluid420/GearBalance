@@ -1,0 +1,32 @@
+{
+  "parent": "gearbalance:rough_gem",
+  "criteria": {
+    "got": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "#gearbalance:flawless_gems"
+          }
+        ]
+      }
+    }
+  },
+  "display": {
+    "icon": {
+      "id": "gearbalance:flawless_stalwart_sapphire"
+    },
+    "title": {
+      "translate": "advancements.gearbalance.flawless_gem.title"
+    },
+    "description": {
+      "translate": "advancements.gearbalance.flawless_gem.description"
+    },
+    "frame": "goal"
+  },
+  "requirements": [
+    [
+      "got"
+    ]
+  ]
+}

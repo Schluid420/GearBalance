@@ -1,0 +1,8 @@
+{
+  "fabric:load_conditions": {
+    "condition": "gearbalance:option",
+    "option": "break_protection"
+  },
+  "type": "gearbalance:restore",
+  "material": "phantom"
+}

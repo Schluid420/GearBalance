@@ -1,0 +1,17 @@
+{
+  "fabric:load_conditions": {
+    "condition": "gearbalance:option",
+    "option": "sockets"
+  },
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "gearbalance:chipped_reckless_onyx",
+    "gearbalance:chipped_reckless_onyx",
+    "gearbalance:chipped_reckless_onyx"
+  ],
+  "result": {
+    "count": 1,
+    "id": "gearbalance:cut_reckless_onyx"
+  }
+}

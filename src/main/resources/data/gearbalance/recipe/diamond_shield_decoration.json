@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:crafting_special_shielddecoration",
+  "banner": "#minecraft:banners",
+  "result": {
+    "id": "gearbalance:diamond_shield"
+  },
+  "target": "gearbalance:diamond_shield"
+}

@@ -1,0 +1,24 @@
+{
+  "parent": "gearbalance:sewing_needle",
+  "criteria": {
+    "done": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "icon": {
+      "id": "minecraft:iron_chestplate"
+    },
+    "title": {
+      "translate": "advancements.gearbalance.padded.title"
+    },
+    "description": {
+      "translate": "advancements.gearbalance.padded.description"
+    }
+  },
+  "requirements": [
+    [
+      "done"
+    ]
+  ]
+}

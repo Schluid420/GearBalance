@@ -1,0 +1,35 @@
+{
+  "parent": "gearbalance:rough_gem",
+  "criteria": {
+    "got": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "gearbalance:aquamarine",
+              "gearbalance:onyx"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "display": {
+    "icon": {
+      "id": "gearbalance:onyx"
+    },
+    "title": {
+      "translate": "advancements.gearbalance.rare_gem.title"
+    },
+    "description": {
+      "translate": "advancements.gearbalance.rare_gem.description"
+    },
+    "frame": "goal"
+  },
+  "requirements": [
+    [
+      "got"
+    ]
+  ]
+}

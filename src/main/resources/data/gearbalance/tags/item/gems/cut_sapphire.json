@@ -1,0 +1,12 @@
+{
+  "replace": false,
+  "values": [
+    "gearbalance:cut_durable_sapphire",
+    "gearbalance:cut_lustrous_sapphire",
+    "gearbalance:cut_misty_sapphire",
+    "gearbalance:cut_stalwart_sapphire",
+    "gearbalance:cut_steady_sapphire",
+    "gearbalance:cut_stormy_sapphire",
+    "gearbalance:cut_thick_sapphire"
+  ]
+}

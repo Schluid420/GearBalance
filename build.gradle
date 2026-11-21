@@ -9,6 +9,11 @@ repositories {
 		name = "Terraformers"
 		url = "https://maven.terraformersmc.com/"
 	}
+	// JEI (shows the GearBalance smithing recipes; optional, not needed to play)
+	maven {
+		name = "BlameJared"
+		url = "https://maven.blamejared.com/"
+	}
 }
 
 loom {
@@ -27,6 +32,10 @@ loom {
 			programArg "--username"
 			programArg "Schluid"
 		}
+		server {
+			// Own folder, so the test server has its own config next to the client's
+			runDir "run-server"
+		}
 	}
 }
 
@@ -40,6 +49,10 @@ dependencies {
 
 	// Mod Menu: only for development and the settings screen. Our mod does not require it at runtime.
 	implementation "com.terraformersmc:modmenu:${project.modmenu_version}"
+
+	// JEI: compiled against its API only; the full JEI runs in the development game for testing
+	compileOnly "mezz.jei:jei-26.3-fabric-api:${project.jei_version}"
+	runtimeOnly "mezz.jei:jei-26.3-fabric:${project.jei_version}"
 }
 
 processResources {
@@ -48,6 +61,14 @@ processResources {
 
 	filesMatching("fabric.mod.json") {
 		expand "version": version
+	}
+}
+
+// Release file names with mod and Minecraft version: gearbalance_1.1.0-26.3.jar and gearbalance_1.1.0-26.3-sources.jar
+tasks.withType(AbstractArchiveTask).configureEach {
+	def jarVersion = "${project.version}-${project.minecraft_version}"
+	archiveFileName = archiveClassifier.map { classifier ->
+		"gearbalance_${jarVersion}" + (classifier ? "-${classifier}" : "") + ".jar"
 	}
 }
 

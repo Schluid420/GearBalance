@@ -1,0 +1,31 @@
+{
+  "parent": "gearbalance:forge_hammer",
+  "criteria": {
+    "got": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "gearbalance:netherite_repair_kit"
+          }
+        ]
+      }
+    }
+  },
+  "display": {
+    "icon": {
+      "id": "gearbalance:netherite_repair_kit"
+    },
+    "title": {
+      "translate": "advancements.gearbalance.repair_kit.title"
+    },
+    "description": {
+      "translate": "advancements.gearbalance.repair_kit.description"
+    }
+  },
+  "requirements": [
+    [
+      "got"
+    ]
+  ]
+}

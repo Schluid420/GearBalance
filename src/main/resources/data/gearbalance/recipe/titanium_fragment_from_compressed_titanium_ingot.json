@@ -1,0 +1,24 @@
+{
+  "fabric:load_conditions": {
+    "condition": "fabric:and",
+    "values": [
+      {
+        "condition": "gearbalance:option",
+        "option": "titanium"
+      },
+      {
+        "condition": "gearbalance:option",
+        "option": "compressed"
+      }
+    ]
+  },
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "gearbalance:compressed_titanium_ingot"
+  ],
+  "result": {
+    "count": 8,
+    "id": "gearbalance:titanium_fragment"
+  }
+}

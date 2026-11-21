@@ -1,0 +1,15 @@
+{
+  "fabric:load_conditions": {
+    "condition": "gearbalance:option",
+    "option": "thread"
+  },
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "#minecraft:wool"
+  ],
+  "result": {
+    "id": "gearbalance:thread",
+    "count": 4
+  }
+}

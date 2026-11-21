@@ -1,0 +1,26 @@
+{
+  "fabric:load_conditions": {
+    "condition": "fabric:and",
+    "values": [
+      {
+        "condition": "gearbalance:option",
+        "option": "titanium"
+      },
+      {
+        "condition": "gearbalance:option",
+        "option": "sockets"
+      }
+    ]
+  },
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "gearbalance:cut_titanite",
+    "gearbalance:cut_titanite",
+    "gearbalance:cut_titanite"
+  ],
+  "result": {
+    "count": 1,
+    "id": "gearbalance:flawless_titanite"
+  }
+}

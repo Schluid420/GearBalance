@@ -1,0 +1,17 @@
+{
+  "fabric:load_conditions": {
+    "condition": "gearbalance:option",
+    "option": "sockets"
+  },
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "gearbalance:cut_bright_ruby",
+    "gearbalance:cut_bright_ruby",
+    "gearbalance:cut_bright_ruby"
+  ],
+  "result": {
+    "count": 1,
+    "id": "gearbalance:flawless_bright_ruby"
+  }
+}

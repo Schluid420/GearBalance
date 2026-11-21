@@ -1,0 +1,36 @@
+{
+  "parent": "gearbalance:root",
+  "criteria": {
+    "got": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "gearbalance:iron_socket_chisel",
+              "gearbalance:golden_socket_chisel",
+              "gearbalance:diamond_socket_chisel",
+              "gearbalance:netherite_socket_chisel"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "display": {
+    "icon": {
+      "id": "gearbalance:iron_socket_chisel"
+    },
+    "title": {
+      "translate": "advancements.gearbalance.socket_chisel.title"
+    },
+    "description": {
+      "translate": "advancements.gearbalance.socket_chisel.description"
+    }
+  },
+  "requirements": [
+    [
+      "got"
+    ]
+  ]
+}

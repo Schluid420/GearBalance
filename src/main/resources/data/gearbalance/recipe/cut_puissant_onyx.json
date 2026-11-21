@@ -1,0 +1,17 @@
+{
+  "fabric:load_conditions": {
+    "condition": "gearbalance:option",
+    "option": "sockets"
+  },
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "gearbalance:chipped_puissant_onyx",
+    "gearbalance:chipped_puissant_onyx",
+    "gearbalance:chipped_puissant_onyx"
+  ],
+  "result": {
+    "count": 1,
+    "id": "gearbalance:cut_puissant_onyx"
+  }
+}

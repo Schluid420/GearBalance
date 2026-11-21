@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:crafting_special_shielddecoration",
+  "banner": "#minecraft:banners",
+  "result": {
+    "id": "gearbalance:titanium_shield"
+  },
+  "target": "gearbalance:titanium_shield"
+}

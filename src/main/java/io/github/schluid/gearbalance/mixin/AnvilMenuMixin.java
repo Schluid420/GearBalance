@@ -2,6 +2,7 @@ package io.github.schluid.gearbalance.mixin;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import io.github.schluid.gearbalance.comfort.BreakProtection;
 import io.github.schluid.gearbalance.config.GearConfig;
 import io.github.schluid.gearbalance.stats.MaterialStat;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -18,11 +19,8 @@ import org.spongepowered.asm.mixin.injection.ModifyConstant;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 /**
- * Optional replacement for "Too Expensive!": the cost is capped at anvilMaxCost instead.
- * Vanilla clears the result at a cost of 40 or more, so that check is lifted as well.
- *
- * Also sets how much one repair item restores. Vanilla uses getMaxDamage() / 4 (25 %) twice in
- * createResult, so the max damage seen there is scaled to match the percentage of the material.
+ * Anvil: cost is capped at anvilMaxCost instead of "Too Expensive!" (vanilla's 40 check is lifted).
+ * Also sets the repair amount per item by scaling the max damage vanilla divides by 4.
  */
 @Mixin(AnvilMenu.class)
 public abstract class AnvilMenuMixin {
@@ -63,5 +61,17 @@ public abstract class AnvilMenuMixin {
 	@ModifyConstant(method = "createResult", constant = @Constant(intValue = 40, ordinal = 2))
 	private int gearbalance$liftLimit(int limit) {
 		return GearConfig.anvilNoLimit ? Integer.MAX_VALUE : limit;
+	}
+
+	/** Break protection: no repairing or combining with a damaged piece at the anvil (renaming alone stays). */
+	@Inject(method = "createResult", at = @At("TAIL"))
+	private void gearbalance$noDamagedRepair(CallbackInfo ci) {
+		AnvilMenu menu = (AnvilMenu) (Object) this;
+		ItemStack left = menu.getSlot(0).getItem();
+		ItemStack right = menu.getSlot(1).getItem();
+		if (!right.isEmpty() && (BreakProtection.marked(left) || BreakProtection.marked(right))) {
+			menu.getSlot(2).set(ItemStack.EMPTY);
+			this.cost.set(0);
+		}
 	}
 }

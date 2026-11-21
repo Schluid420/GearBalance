@@ -1,0 +1,126 @@
+{
+  "model": {
+    "type": "minecraft:select",
+    "property": "minecraft:display_context",
+    "cases": [
+      {
+        "when": [
+          "firstperson_righthand",
+          "firstperson_lefthand",
+          "thirdperson_righthand",
+          "thirdperson_lefthand"
+        ],
+        "model": {
+          "type": "minecraft:select",
+          "property": "gearbalance:hand_effect",
+          "cases": [
+            {
+              "when": [
+                "off"
+              ],
+              "model": {
+                "type": "minecraft:model",
+                "model": "minecraft:item/diamond_sword"
+              }
+            },
+            {
+              "when": [
+                "flames"
+              ],
+              "model": {
+                "type": "minecraft:composite",
+                "models": [
+                  {
+                    "type": "minecraft:model",
+                    "model": "gearbalance:item/outlined/diamond_sword",
+                    "tints": [
+                      {
+                        "type": "minecraft:constant",
+                        "value": -1
+                      },
+                      {
+                        "type": "gearbalance:ring_color"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "minecraft:model",
+                    "model": "gearbalance:item/diamond_sword_fiery",
+                    "tints": [
+                      {
+                        "type": "gearbalance:effect_color"
+                      }
+                    ]
+                  }
+                ]
+              }
+            },
+            {
+              "when": [
+                "shadow"
+              ],
+              "model": {
+                "type": "minecraft:composite",
+                "models": [
+                  {
+                    "type": "minecraft:model",
+                    "model": "gearbalance:item/outlined/diamond_sword",
+                    "tints": [
+                      {
+                        "type": "minecraft:constant",
+                        "value": -1
+                      },
+                      {
+                        "type": "gearbalance:ring_color"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "minecraft:model",
+                    "model": "gearbalance:item/diamond_sword_shadow",
+                    "tints": [
+                      {
+                        "type": "gearbalance:effect_color"
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ],
+          "fallback": {
+            "type": "minecraft:composite",
+            "models": [
+              {
+                "type": "minecraft:model",
+                "model": "gearbalance:item/outlined/diamond_sword",
+                "tints": [
+                  {
+                    "type": "minecraft:constant",
+                    "value": -1
+                  },
+                  {
+                    "type": "gearbalance:ring_color"
+                  }
+                ]
+              },
+              {
+                "type": "minecraft:model",
+                "model": "gearbalance:item/glow/diamond_sword",
+                "tints": [
+                  {
+                    "type": "gearbalance:glow_color"
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      }
+    ],
+    "fallback": {
+      "type": "minecraft:model",
+      "model": "minecraft:item/diamond_sword"
+    }
+  }
+}

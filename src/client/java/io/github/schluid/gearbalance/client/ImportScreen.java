@@ -6,18 +6,15 @@ import com.mojang.blaze3d.Blaze3D;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.List;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.screens.ConfirmScreen;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 
-/**
- * Lists the files in config/gearbalance/profiles/, newest first. Picking one asks first and then
- * replaces the current setup. Files from other players or modpacks can simply be dropped into that folder.
- */
-public class ImportScreen extends Screen {
+/** Lists config/gearbalance/profiles/, newest first. Picking one asks first, then replaces the setup. */
+public class ImportScreen extends TipScreen {
 	private static final int TOP = 44;
 	private static final int ROW = 24;
 	private static final int WIDTH = 300;
@@ -44,6 +41,7 @@ public class ImportScreen extends Screen {
 
 	@Override
 	protected void init() {
+		clearTips();
 		files = GearConfig.listExports();
 		scroll = Math.max(0, Math.min(scroll, files.size() - visibleRows()));
 		int x = this.width / 2 - WIDTH / 2;
@@ -51,9 +49,10 @@ public class ImportScreen extends Screen {
 		for (int i = 0; i < visibleRows() && scroll + i < files.size(); i++) {
 			String file = files.get(scroll + i);
 			int y = TOP + i * ROW;
-			this.addRenderableWidget(Button.builder(Component.literal(file), b -> confirm(file))
-					.bounds(x, y, WIDTH - deleteWidth - 4, 20)
-					.tooltip(Tooltip.create(Component.translatable("gearbalance.import.file.tip"))).build());
+			this.addRenderableWidget(tip(Button.builder(Component.literal(file), b -> confirm(file))
+					.bounds(x, y, WIDTH - deleteWidth - 4, 20).build(),
+					Component.literal(file),
+					Component.translatable("gearbalance.import.file.tip").withStyle(ChatFormatting.GRAY)));
 			this.addRenderableWidget(Button.builder(Component.translatable("gearbalance.import.delete"), b -> confirmDelete(file))
 					.bounds(x + WIDTH - deleteWidth, y, deleteWidth, 20).build());
 		}
@@ -61,14 +60,15 @@ public class ImportScreen extends Screen {
 		int bottomWidth = 150;
 		int bottomLeft = this.width / 2 - (2 * bottomWidth + 4) / 2;
 		// Opens the folder in the file explorer, like the button for resource packs does
-		this.addRenderableWidget(Button.builder(Component.translatable("gearbalance.import.folder"), b -> {
+		this.addRenderableWidget(tip(Button.builder(Component.translatable("gearbalance.import.folder"), b -> {
 			try {
 				Files.createDirectories(GearConfig.exportFolder());
 			} catch (IOException ignored) {
 			}
 			Blaze3D.openPath(GearConfig.exportFolder());
-		}).bounds(bottomLeft, this.height - 26, bottomWidth, 20)
-				.tooltip(Tooltip.create(Component.literal(GearConfig.exportFolder().toString()))).build());
+		}).bounds(bottomLeft, this.height - 26, bottomWidth, 20).build(),
+				Component.translatable("gearbalance.import.folder"),
+				Component.literal(GearConfig.exportFolder().toString()).withStyle(ChatFormatting.GRAY)));
 		this.addRenderableWidget(Button.builder(Component.translatable("gui.back"), b -> this.onClose())
 				.bounds(bottomLeft + bottomWidth + 4, this.height - 26, bottomWidth, 20).build());
 	}
@@ -125,9 +125,9 @@ public class ImportScreen extends Screen {
 			graphics.centeredText(this.font, Component.translatable("gearbalance.import.empty"), this.width / 2, TOP + 6, GREY);
 		}
 		if (error != null) {
-			graphics.centeredText(this.font, error,
-					this.width / 2, this.height - 40, RED);
+			drawFittedCentered(graphics, error, this.width / 2, this.height - 40, this.width - 20, RED);
 		}
+		drawTips(graphics, mouseX, mouseY);
 	}
 
 	@Override

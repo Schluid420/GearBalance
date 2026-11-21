@@ -1,0 +1,77 @@
+{
+  "parent": "minecraft:item/handheld_mace",
+  "textures": {
+    "layer0": "gearbalance:item/outlined/mace",
+    "layer1": "gearbalance:item/outlined/mace_ring"
+  },
+  "display": {
+    "thirdperson_righthand": {
+      "rotation": [
+        0,
+        -90,
+        55
+      ],
+      "translation": [
+        0,
+        4.0,
+        1
+      ],
+      "scale": [
+        1.125,
+        1.125,
+        1
+      ]
+    },
+    "thirdperson_lefthand": {
+      "rotation": [
+        0,
+        90,
+        -55
+      ],
+      "translation": [
+        0,
+        4.0,
+        1
+      ],
+      "scale": [
+        1.125,
+        1.125,
+        1
+      ]
+    },
+    "firstperson_righthand": {
+      "rotation": [
+        0,
+        -90,
+        25
+      ],
+      "translation": [
+        0,
+        3,
+        0.8
+      ],
+      "scale": [
+        1.0125,
+        1.0125,
+        0.9
+      ]
+    },
+    "firstperson_lefthand": {
+      "rotation": [
+        0,
+        90,
+        -25
+      ],
+      "translation": [
+        0,
+        3,
+        0.8
+      ],
+      "scale": [
+        1.0125,
+        1.0125,
+        0.9
+      ]
+    }
+  }
+}

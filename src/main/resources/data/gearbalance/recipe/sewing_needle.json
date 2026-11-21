@@ -1,0 +1,19 @@
+{
+  "fabric:load_conditions": {
+    "condition": "gearbalance:option",
+    "option": "needle"
+  },
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "pattern": [
+    "N",
+    "S"
+  ],
+  "key": {
+    "N": "minecraft:iron_nugget",
+    "S": "minecraft:string"
+  },
+  "result": {
+    "id": "gearbalance:sewing_needle"
+  }
+}

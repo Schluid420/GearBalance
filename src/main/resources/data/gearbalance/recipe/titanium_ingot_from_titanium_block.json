@@ -1,0 +1,15 @@
+{
+  "fabric:load_conditions": {
+    "condition": "gearbalance:option",
+    "option": "titanium"
+  },
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "gearbalance:titanium_block"
+  ],
+  "result": {
+    "count": 9,
+    "id": "gearbalance:titanium_ingot"
+  }
+}

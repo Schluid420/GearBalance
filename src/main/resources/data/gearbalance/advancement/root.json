@@ -1,0 +1,60 @@
+{
+  "criteria": {
+    "got": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "gearbalance:sewing_needle",
+              "gearbalance:iron_forge_hammer",
+              "gearbalance:golden_forge_hammer",
+              "gearbalance:diamond_forge_hammer",
+              "gearbalance:netherite_forge_hammer",
+              "gearbalance:iron_socket_chisel",
+              "gearbalance:golden_socket_chisel",
+              "gearbalance:diamond_socket_chisel",
+              "gearbalance:netherite_socket_chisel",
+              "gearbalance:compressed_leather",
+              "gearbalance:compressed_copper_ingot",
+              "gearbalance:compressed_chain",
+              "gearbalance:compressed_iron_ingot",
+              "gearbalance:compressed_gold_ingot",
+              "gearbalance:compressed_diamond",
+              "gearbalance:compressed_netherite_ingot",
+              "gearbalance:ruby",
+              "gearbalance:sapphire",
+              "gearbalance:topaz",
+              "gearbalance:aquamarine",
+              "gearbalance:onyx",
+              "gearbalance:copper_shield",
+              "gearbalance:iron_shield",
+              "gearbalance:golden_shield",
+              "gearbalance:diamond_shield",
+              "gearbalance:netherite_shield"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "display": {
+    "icon": {
+      "id": "gearbalance:iron_forge_hammer"
+    },
+    "title": {
+      "translate": "advancements.gearbalance.root.title"
+    },
+    "description": {
+      "translate": "advancements.gearbalance.root.description"
+    },
+    "background": "minecraft:gui/advancements/backgrounds/stone",
+    "show_toast": false,
+    "announce_to_chat": false
+  },
+  "requirements": [
+    [
+      "got"
+    ]
+  ]
+}

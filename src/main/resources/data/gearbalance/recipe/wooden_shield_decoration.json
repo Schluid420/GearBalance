@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:crafting_special_shielddecoration",
+  "banner": "#minecraft:banners",
+  "result": {
+    "id": "gearbalance:wooden_shield"
+  },
+  "target": "gearbalance:wooden_shield"
+}

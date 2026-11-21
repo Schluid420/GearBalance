@@ -3,27 +3,28 @@ package io.github.schluid.gearbalance.client;
 import io.github.schluid.gearbalance.config.GearConfig;
 import io.github.schluid.gearbalance.config.Presets;
 import it.unimi.dsi.fastutil.booleans.BooleanConsumer;
+import java.util.List;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
-import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.components.toasts.SystemToast;
 import net.minecraft.client.gui.screens.ConfirmScreen;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 
 /**
- * Three ready-made presets at the top, below them the three profiles the player saves himself.
- * Everything that is loaded applies after a restart, the settings screen asks for it when closed.
+ * Three presets on top, the player's three own profiles below, export / import at the bottom.
+ * Anything that loses data asks first; loaded profiles apply after a restart.
  */
-public class ProfilesScreen extends Screen {
+public class ProfilesScreen extends TipScreen {
 	private static final int ROW_HEIGHT = 24;
 	private static final int GAP = 4;
 	private static final int PRESET_HEADER = 42;
 	private static final int PRESET_TOP = 54;
 	private static final int GREY = 0xFFA0A0A0;
 	private static final int WHITE = 0xFFFFFFFF;
+	private static final SystemToast.SystemToastId EXPORT_TOAST = new SystemToast.SystemToastId(5000L);
 
 	private final Screen parent;
 
@@ -61,21 +62,24 @@ public class ProfilesScreen extends Screen {
 
 	@Override
 	protected void init() {
+		clearTips();
 		layout();
 		int left = left();
 		int right = left + rowWidth;
+		// Settings of a server without operator rights: only saving them as an own profile and exporting work
+		boolean locked = ServerSettingsClient.locked();
 
 		// Presets: name and description on the left, one load button on the right
 		Presets[] presets = Presets.values();
 		for (int i = 0; i < presets.length; i++) {
 			Presets preset = presets[i];
 			int y = PRESET_TOP + i * ROW_HEIGHT;
-			Component name = Component.translatable("gearbalance.preset." + preset.key);
-			this.addRenderableWidget(Button.builder(Component.translatable("gearbalance.profiles.load"),
+			String key = "gearbalance.preset." + preset.key;
+			Component name = Component.translatable(key);
+			this.addRenderableWidget(tip(Button.builder(Component.translatable("gearbalance.profiles.load"),
 					b -> confirm(name, preset::apply))
-					.bounds(right - buttonWidth, y, buttonWidth, 20)
-					.tooltip(Tooltip.create(Component.translatable("gearbalance.preset." + preset.key + ".tip")))
-					.build());
+					.bounds(right - buttonWidth, y, buttonWidth, 20).build(),
+					name, Component.translatable(key + ".tip").withStyle(ChatFormatting.GRAY))).active = !locked;
 		}
 
 		// Own profiles
@@ -101,7 +105,7 @@ public class ProfilesScreen extends Screen {
 				GearConfig.save();
 			};
 			// An empty slot can be filled right away, a used one is only overwritten after asking
-			this.addRenderableWidget(Button.builder(Component.translatable("gearbalance.profiles.save"), b -> {
+			this.addRenderableWidget(tip(Button.builder(Component.translatable("gearbalance.profiles.save"), b -> {
 				if (profile.isEmpty()) {
 					saveAction.run();
 					this.rebuildWidgets();
@@ -109,36 +113,46 @@ public class ProfilesScreen extends Screen {
 					ask(Component.translatable("gearbalance.profiles.save.confirm.title", profileName),
 							Component.translatable("gearbalance.profiles.save.confirm.message"), saveAction);
 				}
-			}).bounds(bx, y, buttonWidth, 20)
-					.tooltip(Tooltip.create(Component.translatable("gearbalance.profiles.save.tip"))).build());
+			}).bounds(bx, y, buttonWidth, 20).build(),
+					Component.translatable(GearConfig.serverMode() ? "gearbalance.server.save_profile.tip"
+							: "gearbalance.profiles.save.tip")));
 
 			Button load = Button.builder(Component.translatable("gearbalance.profiles.load"),
-					b -> confirm(profileName, () -> GearConfig.loadProfile(slot))).bounds(bx + buttonWidth + GAP, y, buttonWidth, 20)
-					.tooltip(Tooltip.create(Component.translatable("gearbalance.profiles.load.tip"))).build();
-			load.active = !profile.isEmpty();
-			this.addRenderableWidget(load);
+					b -> confirm(profileName, () -> GearConfig.loadProfile(slot)))
+					.bounds(bx + buttonWidth + GAP, y, buttonWidth, 20).build();
+			load.active = !profile.isEmpty() && !locked;
+			this.addRenderableWidget(tip(load, Component.translatable("gearbalance.profiles.load.tip")));
 
+			// Also usable if only a name was typed in, so the name can be removed again
 			Button clear = Button.builder(Component.translatable("gearbalance.profiles.clear"),
 					b -> ask(Component.translatable("gearbalance.profiles.clear.confirm.title", profileName),
 							Component.translatable("gearbalance.profiles.clear.confirm.message"), () -> {
 								GearConfig.clearProfile(slot);
 								GearConfig.save();
 							})).bounds(bx + 2 * (buttonWidth + GAP), y, buttonWidth, 20).build();
-			clear.active = !profile.isEmpty();
+			clear.active = !profile.isEmpty() || !profile.name.isBlank();
 			this.addRenderableWidget(clear);
 		}
 
-		// Export, import and back in one row at the bottom
-		int bottomWidth = 100;
-		int bottomLeft = this.width / 2 - (3 * bottomWidth + 2 * GAP) / 2;
+		// HM+ profiles, export, import and back in one row at the bottom
+		int bottomWidth = Math.min(100, (this.width - 20 - 3 * GAP) / 4);
+		int bottomLeft = this.width / 2 - (4 * bottomWidth + 3 * GAP) / 2;
 		int by = this.height - 26;
-		this.addRenderableWidget(Button.builder(Component.translatable("gearbalance.export"), b -> export())
-				.bounds(bottomLeft, by, bottomWidth, 20)
-				.tooltip(Tooltip.create(Component.translatable("gearbalance.export.tip"))).build());
-		this.addRenderableWidget(Button.builder(Component.translatable("gearbalance.import"),
+		this.addRenderableWidget(tip(Button.builder(Component.translatable("gearbalance.hm.button"),
+				b -> this.minecraft.setScreenAndShow(new HmProfilesScreen(this, this.parent)))
+				.bounds(bottomLeft, by, bottomWidth, 20).build(),
+				Component.translatable("gearbalance.hm.button"),
+				Component.translatable("gearbalance.hm.button.tip").withStyle(ChatFormatting.GRAY))).active = !locked;
+		bottomLeft += bottomWidth + GAP;
+		this.addRenderableWidget(tip(Button.builder(Component.translatable("gearbalance.export"), b -> export())
+				.bounds(bottomLeft, by, bottomWidth, 20).build(),
+				Component.translatable("gearbalance.export"),
+				Component.translatable("gearbalance.export.tip").withStyle(ChatFormatting.GRAY)));
+		this.addRenderableWidget(tip(Button.builder(Component.translatable("gearbalance.import"),
 				b -> this.minecraft.setScreenAndShow(new ImportScreen(this, this.parent)))
-				.bounds(bottomLeft + bottomWidth + GAP, by, bottomWidth, 20)
-				.tooltip(Tooltip.create(Component.translatable("gearbalance.import.tip"))).build());
+				.bounds(bottomLeft + bottomWidth + GAP, by, bottomWidth, 20).build(),
+				Component.translatable("gearbalance.import"),
+				Component.translatable("gearbalance.import.tip").withStyle(ChatFormatting.GRAY))).active = !locked;
 		this.addRenderableWidget(Button.builder(Component.translatable("gui.back"), b -> this.onClose())
 				.bounds(bottomLeft + 2 * (bottomWidth + GAP), by, bottomWidth, 20).build());
 	}
@@ -151,8 +165,6 @@ public class ProfilesScreen extends Screen {
 		Component message = Component.literal(file != null ? "config/gearbalance/profiles/" + file : "");
 		SystemToast.add(this.minecraft.gui.toastManager(), EXPORT_TOAST, title, message);
 	}
-
-	private static final SystemToast.SystemToastId EXPORT_TOAST = new SystemToast.SystemToastId(5000L);
 
 	/** Yes/No before anything that can't be undone. Comes back to this screen either way. */
 	private void ask(Component title, Component message, Runnable action) {
@@ -186,7 +198,7 @@ public class ProfilesScreen extends Screen {
 	public void extractRenderState(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float delta) {
 		super.extractRenderState(graphics, mouseX, mouseY, delta);
 		graphics.centeredText(this.font, this.title, this.width / 2, 12, WHITE);
-		graphics.centeredText(this.font, Component.translatable("gearbalance.profiles.current", GearConfig.changeCount()),
+		graphics.centeredText(this.font, Component.translatable("gearbalance.profiles.current", GearConfig.totalChangeCount()),
 				this.width / 2, 24, GREY);
 
 		int left = left();
@@ -196,13 +208,18 @@ public class ProfilesScreen extends Screen {
 		graphics.text(this.font, Component.translatable("gearbalance.preset.header").withStyle(ChatFormatting.UNDERLINE),
 				left, PRESET_HEADER, GREY);
 		Presets[] presets = Presets.values();
+		List<Component> hovered = null;
 		for (int i = 0; i < presets.length; i++) {
-			int y = PRESET_TOP + i * ROW_HEIGHT + 6;
+			int rowTop = PRESET_TOP + i * ROW_HEIGHT;
+			int y = rowTop + 6;
 			String key = "gearbalance.preset." + presets[i].key;
 			graphics.text(this.font, Component.translatable(key), left, y, WHITE);
-			Component description = Component.translatable(key + ".short");
-			graphics.text(this.font, this.font.plainSubstrByWidth(description.getString(), descriptionWidth),
-					descriptionLeft, y, GREY);
+			// Made smaller if too long; the full text is in the tooltip of the row
+			drawFitted(graphics, Component.translatable(key + ".short"), descriptionLeft, y, descriptionWidth, GREY);
+			if (mouseX >= left && mouseX < descriptionLeft + descriptionWidth && mouseY >= rowTop && mouseY < rowTop + 20) {
+				hovered = List.of(Component.translatable(key),
+						Component.translatable(key + ".tip").withStyle(ChatFormatting.GRAY));
+			}
 		}
 
 		graphics.text(this.font, Component.translatable("gearbalance.profiles.header").withStyle(ChatFormatting.UNDERLINE),
@@ -214,6 +231,11 @@ public class ProfilesScreen extends Screen {
 					: Component.translatable("gearbalance.profiles.count", profile.changeCount());
 			graphics.text(this.font, info, left + nameWidth, profileTop() + i * ROW_HEIGHT + 6,
 					profile.isEmpty() ? 0xFF808080 : 0xFFE0E0E0);
+		}
+		if (hovered != null) {
+			showTip(graphics, hovered, mouseX, mouseY);
+		} else {
+			drawTips(graphics, mouseX, mouseY);
 		}
 	}
 

@@ -1,0 +1,19 @@
+{
+  "fabric:load_conditions": {
+    "condition": "gearbalance:option",
+    "option": "shields"
+  },
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "pattern": [
+    "WWW",
+    "WWW",
+    " W "
+  ],
+  "key": {
+    "W": "#minecraft:wooden_tool_materials"
+  },
+  "result": {
+    "id": "gearbalance:wooden_shield"
+  }
+}

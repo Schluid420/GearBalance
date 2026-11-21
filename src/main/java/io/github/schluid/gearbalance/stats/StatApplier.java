@@ -22,11 +22,7 @@ import net.minecraft.world.item.component.BlocksAttacks;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.item.equipment.Equippable;
 
-/**
- * Changes the default components of the managed items, so existing item stacks pick up the
- * new values without being touched. Fabric calls this every time the item components are built,
- * always starting from vanilla, which is also where the vanilla values for the screen come from.
- */
+/** Changes the default components of managed items so existing stacks get new values. Fabric calls it on every component build, starting from vanilla. */
 public final class StatApplier {
 	private StatApplier() {
 	}
@@ -141,10 +137,7 @@ public final class StatApplier {
 		return true;
 	}
 
-	/**
-	 * The first modifier of the attribute keeps its id, slot and tooltip style, any others are dropped.
-	 * keepZero is for damage and speed, where 0 still has to show up in the tooltip.
-	 */
+	/** The first modifier of the attribute keeps id, slot and style, others are dropped. keepZero: damage and speed show 0 in the tooltip. */
 	private static void setValue(List<ItemAttributeModifiers.Entry> list, Holder<Attribute> attribute, double amount,
 			Identifier newId, EquipmentSlotGroup slot, boolean keepZero) {
 		int first = -1;

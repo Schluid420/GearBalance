@@ -1,0 +1,11 @@
+{
+  "replace": false,
+  "values": [
+    "gearbalance:cut_deft_topaz",
+    "gearbalance:cut_glinting_topaz",
+    "gearbalance:cut_precise_topaz",
+    "gearbalance:cut_purified_topaz",
+    "gearbalance:cut_quick_topaz",
+    "gearbalance:cut_turbid_topaz"
+  ]
+}

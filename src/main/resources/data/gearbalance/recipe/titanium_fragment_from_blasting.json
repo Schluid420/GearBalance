@@ -1,0 +1,13 @@
+{
+  "fabric:load_conditions": {
+    "condition": "gearbalance:option",
+    "option": "titanium"
+  },
+  "type": "minecraft:blasting",
+  "cookingtime": 400,
+  "experience": 3.0,
+  "ingredient": "gearbalance:deepslate_titanium_ore",
+  "result": {
+    "id": "gearbalance:titanium_fragment"
+  }
+}

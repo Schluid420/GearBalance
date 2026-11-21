@@ -1,0 +1,19 @@
+{
+  "fabric:load_conditions": {
+    "condition": "gearbalance:option",
+    "option": "titanium"
+  },
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "pattern": [
+    "###",
+    "###",
+    "###"
+  ],
+  "key": {
+    "#": "gearbalance:titanium_ingot"
+  },
+  "result": {
+    "id": "gearbalance:titanium_block"
+  }
+}

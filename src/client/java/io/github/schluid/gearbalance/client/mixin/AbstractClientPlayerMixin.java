@@ -12,10 +12,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 
-/**
- * Vanilla zooms the view when the player gets slower or faster. Armor weight and the speed set bonus
- * change the speed, not the view, so the mod's own modifiers are left out of the field of view.
- */
+/** The mod's speed modifiers (armor weight, set bonus, gems) are left out of the field of view. */
 @Mixin(AbstractClientPlayer.class)
 public abstract class AbstractClientPlayerMixin {
 	@WrapOperation(method = "getFieldOfViewModifier", at = @At(value = "INVOKE",

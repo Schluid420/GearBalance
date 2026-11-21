@@ -1,0 +1,20 @@
+{
+  "fabric:load_conditions": {
+    "condition": "gearbalance:option",
+    "option": "compressed"
+  },
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "###",
+    "#X#",
+    "###"
+  ],
+  "key": {
+    "#": "minecraft:netherite_scrap",
+    "X": "minecraft:blaze_rod"
+  },
+  "result": {
+    "id": "gearbalance:compressed_netherite_ingot"
+  }
+}

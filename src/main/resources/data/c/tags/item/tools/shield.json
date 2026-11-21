@@ -1,0 +1,11 @@
+{
+  "replace": false,
+  "values": [
+    "gearbalance:wooden_shield",
+    "gearbalance:copper_shield",
+    "gearbalance:iron_shield",
+    "gearbalance:golden_shield",
+    "gearbalance:diamond_shield",
+    "gearbalance:netherite_shield"
+  ]
+}

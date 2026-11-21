@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    "gearbalance:titanium_helmet",
+    "gearbalance:titanium_chestplate",
+    "gearbalance:titanium_leggings",
+    "gearbalance:titanium_boots"
+  ]
+}

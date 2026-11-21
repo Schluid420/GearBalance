@@ -1,0 +1,8 @@
+{
+  "fabric:load_conditions": {
+    "condition": "gearbalance:option",
+    "option": "sockets"
+  },
+  "type": "gearbalance:gem",
+  "material": "copper"
+}

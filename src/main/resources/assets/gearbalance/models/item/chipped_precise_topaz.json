@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "gearbalance:item/chipped_precise_topaz"
+  }
+}

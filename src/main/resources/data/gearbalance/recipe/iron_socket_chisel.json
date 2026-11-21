@@ -1,0 +1,21 @@
+{
+  "fabric:load_conditions": {
+    "condition": "gearbalance:option",
+    "option": "sockets"
+  },
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "pattern": [
+    "  M",
+    " A ",
+    "S  "
+  ],
+  "key": {
+    "M": "minecraft:iron_ingot",
+    "A": "minecraft:amethyst_shard",
+    "S": "minecraft:stick"
+  },
+  "result": {
+    "id": "gearbalance:iron_socket_chisel"
+  }
+}

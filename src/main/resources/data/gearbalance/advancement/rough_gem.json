@@ -1,0 +1,37 @@
+{
+  "parent": "gearbalance:root",
+  "criteria": {
+    "got": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "gearbalance:ruby",
+              "gearbalance:sapphire",
+              "gearbalance:topaz",
+              "gearbalance:aquamarine",
+              "gearbalance:onyx"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "display": {
+    "icon": {
+      "id": "gearbalance:ruby"
+    },
+    "title": {
+      "translate": "advancements.gearbalance.rough_gem.title"
+    },
+    "description": {
+      "translate": "advancements.gearbalance.rough_gem.description"
+    }
+  },
+  "requirements": [
+    [
+      "got"
+    ]
+  ]
+}

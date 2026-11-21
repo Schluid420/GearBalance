@@ -1,0 +1,17 @@
+{
+  "fabric:load_conditions": {
+    "condition": "fabric:and",
+    "values": [
+      {
+        "condition": "gearbalance:option",
+        "option": "titanium"
+      },
+      {
+        "condition": "gearbalance:option",
+        "option": "sockets"
+      }
+    ]
+  },
+  "type": "gearbalance:gem",
+  "material": "titanium"
+}

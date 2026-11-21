@@ -1,0 +1,22 @@
+{
+  "fabric:load_conditions": {
+    "condition": "gearbalance:option",
+    "option": "plan_needed"
+  },
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "DPD",
+    "DBD",
+    "DDD"
+  ],
+  "key": {
+    "D": "minecraft:diamond",
+    "P": "gearbalance:master_smithing_plan",
+    "B": "minecraft:iron_block"
+  },
+  "result": {
+    "id": "gearbalance:master_smithing_plan",
+    "count": 2
+  }
+}

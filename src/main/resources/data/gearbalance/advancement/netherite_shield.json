@@ -1,0 +1,34 @@
+{
+  "parent": "gearbalance:shield",
+  "criteria": {
+    "got": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "gearbalance:netherite_shield"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "display": {
+    "icon": {
+      "id": "gearbalance:netherite_shield"
+    },
+    "title": {
+      "translate": "advancements.gearbalance.netherite_shield.title"
+    },
+    "description": {
+      "translate": "advancements.gearbalance.netherite_shield.description"
+    },
+    "frame": "goal"
+  },
+  "requirements": [
+    [
+      "got"
+    ]
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "fabric:load_conditions": {
+    "condition": "gearbalance:option",
+    "option": "shields"
+  },
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "pattern": [
+    " M ",
+    "MSM",
+    " M "
+  ],
+  "key": {
+    "M": "minecraft:gold_ingot",
+    "S": [
+      "gearbalance:wooden_shield",
+      "minecraft:shield"
+    ]
+  },
+  "result": {
+    "count": 1,
+    "id": "gearbalance:golden_shield"
+  }
+}

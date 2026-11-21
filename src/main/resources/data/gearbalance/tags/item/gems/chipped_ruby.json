@@ -1,0 +1,11 @@
+{
+  "replace": false,
+  "values": [
+    "gearbalance:chipped_bold_ruby",
+    "gearbalance:chipped_bright_ruby",
+    "gearbalance:chipped_fierce_ruby",
+    "gearbalance:chipped_flashing_ruby",
+    "gearbalance:chipped_glowing_ruby",
+    "gearbalance:chipped_solid_ruby"
+  ]
+}

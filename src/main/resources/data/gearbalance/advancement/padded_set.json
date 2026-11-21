@@ -1,0 +1,55 @@
+{
+  "parent": "gearbalance:padded",
+  "criteria": {
+    "worn": {
+      "trigger": "minecraft:tick",
+      "conditions": {
+        "player": {
+          "type": "minecraft:entity_properties",
+          "entity": "this",
+          "predicate": {
+            "minecraft:equipment": {
+              "head": {
+                "components": {
+                  "gearbalance:padded": true
+                }
+              },
+              "chest": {
+                "components": {
+                  "gearbalance:padded": true
+                }
+              },
+              "legs": {
+                "components": {
+                  "gearbalance:padded": true
+                }
+              },
+              "feet": {
+                "components": {
+                  "gearbalance:padded": true
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "display": {
+    "icon": {
+      "id": "minecraft:diamond_chestplate"
+    },
+    "title": {
+      "translate": "advancements.gearbalance.padded_set.title"
+    },
+    "description": {
+      "translate": "advancements.gearbalance.padded_set.description"
+    },
+    "frame": "goal"
+  },
+  "requirements": [
+    [
+      "worn"
+    ]
+  ]
+}

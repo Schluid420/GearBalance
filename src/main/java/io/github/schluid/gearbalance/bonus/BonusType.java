@@ -7,10 +7,7 @@ import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier.Operation;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 
-/**
- * What a set bonus does. The strength typed into the settings is multiplied by perUnit,
- * for example 2 hearts become 4 health points.
- */
+/** What a set bonus does. The setting is multiplied by perUnit (2 hearts = 4 health points). */
 public enum BonusType {
 	SPEED("speed", 50, 0.01, Operation.ADD_MULTIPLIED_BASE, Attributes.MOVEMENT_SPEED),
 	FALL_DAMAGE("fall_damage", 100, -0.01, Operation.ADD_MULTIPLIED_BASE, Attributes.FALL_DAMAGE_MULTIPLIER),
@@ -48,15 +45,26 @@ public enum BonusType {
 	}
 
 	public static BonusType defaultFor(Material material) {
-		return switch (material) {
-			case LEATHER -> SPEED;
-			case COPPER -> ARMOR;
-			case CHAINMAIL -> KNOCKBACK_RESISTANCE;
-			case IRON -> HEALTH;
-			case GOLD -> LUCK;
-			case DIAMOND -> TOUGHNESS;
-			default -> BURNING;
-		};
+		if (material.defaultBonus != null) {
+			BonusType type = byKey(material.defaultBonus);
+			if (type != null) {
+				return type;
+			}
+		}
+		if (material == Material.LEATHER) {
+			return SPEED;
+		} else if (material == Material.COPPER) {
+			return ARMOR;
+		} else if (material == Material.CHAINMAIL) {
+			return KNOCKBACK_RESISTANCE;
+		} else if (material == Material.IRON) {
+			return HEALTH;
+		} else if (material == Material.GOLD) {
+			return LUCK;
+		} else if (material == Material.DIAMOND) {
+			return TOUGHNESS;
+		}
+		return BURNING;
 	}
 
 	public static BonusType byKey(String key) {

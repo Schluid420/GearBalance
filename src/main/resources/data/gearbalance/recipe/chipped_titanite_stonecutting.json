@@ -1,0 +1,21 @@
+{
+  "fabric:load_conditions": {
+    "condition": "fabric:and",
+    "values": [
+      {
+        "condition": "gearbalance:option",
+        "option": "titanium"
+      },
+      {
+        "condition": "gearbalance:option",
+        "option": "sockets"
+      }
+    ]
+  },
+  "type": "minecraft:stonecutting",
+  "ingredient": "gearbalance:titanite",
+  "result": {
+    "count": 1,
+    "id": "gearbalance:chipped_titanite"
+  }
+}

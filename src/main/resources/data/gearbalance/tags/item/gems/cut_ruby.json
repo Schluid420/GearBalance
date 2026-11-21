@@ -1,0 +1,11 @@
+{
+  "replace": false,
+  "values": [
+    "gearbalance:cut_bold_ruby",
+    "gearbalance:cut_bright_ruby",
+    "gearbalance:cut_fierce_ruby",
+    "gearbalance:cut_flashing_ruby",
+    "gearbalance:cut_glowing_ruby",
+    "gearbalance:cut_solid_ruby"
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "parent": "gearbalance:gem",
+  "criteria": {
+    "done": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "icon": {
+      "id": "gearbalance:flawless_vivid_emerald"
+    },
+    "title": {
+      "translate": "advancements.gearbalance.gems_full.title"
+    },
+    "description": {
+      "translate": "advancements.gearbalance.gems_full.description"
+    },
+    "frame": "challenge"
+  },
+  "requirements": [
+    [
+      "done"
+    ]
+  ]
+}

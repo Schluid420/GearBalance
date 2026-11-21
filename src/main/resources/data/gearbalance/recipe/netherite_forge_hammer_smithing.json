@@ -1,0 +1,13 @@
+{
+  "fabric:load_conditions": {
+    "condition": "gearbalance:option",
+    "option": "upgrades"
+  },
+  "type": "minecraft:smithing_transform",
+  "template": "minecraft:netherite_upgrade_smithing_template",
+  "base": "gearbalance:diamond_forge_hammer",
+  "addition": "#minecraft:netherite_tool_materials",
+  "result": {
+    "id": "gearbalance:netherite_forge_hammer"
+  }
+}

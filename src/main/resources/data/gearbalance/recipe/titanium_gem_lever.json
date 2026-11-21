@@ -1,0 +1,22 @@
+{
+  "fabric:load_conditions": {
+    "condition": "fabric:and",
+    "values": [
+      {
+        "condition": "gearbalance:option",
+        "option": "titanium"
+      },
+      {
+        "condition": "gearbalance:option",
+        "option": "gem_lever"
+      }
+    ]
+  },
+  "type": "minecraft:smithing_transform",
+  "template": "gearbalance:titanium_upgrade_smithing_template",
+  "base": "gearbalance:netherite_gem_lever",
+  "addition": "#gearbalance:titanium_tool_materials",
+  "result": {
+    "id": "gearbalance:titanium_gem_lever"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "replace": false,
+  "values": [
+    "gearbalance:cut_delicate_emerald",
+    "gearbalance:cut_enduring_emerald",
+    "gearbalance:cut_energized_emerald",
+    "gearbalance:cut_jagged_emerald",
+    "gearbalance:cut_subtle_emerald",
+    "gearbalance:cut_vivid_emerald"
+  ]
+}

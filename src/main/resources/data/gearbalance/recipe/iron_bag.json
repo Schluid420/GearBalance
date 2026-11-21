@@ -1,0 +1,13 @@
+{
+  "fabric:load_conditions": {
+    "condition": "gearbalance:option",
+    "option": "bags"
+  },
+  "type": "minecraft:smithing_transform",
+  "template": "gearbalance:sewing_needle",
+  "base": "gearbalance:copper_bag",
+  "addition": "minecraft:iron_block",
+  "result": {
+    "id": "gearbalance:iron_bag"
+  }
+}

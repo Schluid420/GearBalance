@@ -1,0 +1,29 @@
+{
+  "fabric:load_conditions": {
+    "condition": "fabric:and",
+    "values": [
+      {
+        "condition": "gearbalance:option",
+        "option": "titanium"
+      },
+      {
+        "condition": "gearbalance:option",
+        "option": "compressed"
+      }
+    ]
+  },
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "###",
+    "#X#",
+    "###"
+  ],
+  "key": {
+    "#": "gearbalance:titanium_fragment",
+    "X": "minecraft:blaze_rod"
+  },
+  "result": {
+    "id": "gearbalance:compressed_titanium_ingot"
+  }
+}

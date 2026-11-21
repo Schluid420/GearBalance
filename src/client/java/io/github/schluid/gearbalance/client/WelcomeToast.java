@@ -6,10 +6,7 @@ import net.minecraft.client.gui.components.toasts.SystemToast;
 import net.minecraft.client.gui.screens.TitleScreen;
 import net.minecraft.network.chat.Component;
 
-/**
- * One small note in the corner on the very first start: the mod is free and where the official
- * download is. Waits for the title screen, so it isn't hidden behind the loading screen.
- */
+/** Note on the very first start: the mod is free, plus the official download. Waits for the title screen. */
 public final class WelcomeToast {
 	private WelcomeToast() {
 	}

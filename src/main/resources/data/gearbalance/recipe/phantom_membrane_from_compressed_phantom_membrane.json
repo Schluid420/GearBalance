@@ -1,0 +1,15 @@
+{
+  "fabric:load_conditions": {
+    "condition": "gearbalance:option",
+    "option": "break_protection"
+  },
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "gearbalance:compressed_phantom_membrane"
+  ],
+  "result": {
+    "count": 8,
+    "id": "minecraft:phantom_membrane"
+  }
+}

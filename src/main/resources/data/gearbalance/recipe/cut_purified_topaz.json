@@ -1,0 +1,17 @@
+{
+  "fabric:load_conditions": {
+    "condition": "gearbalance:option",
+    "option": "sockets"
+  },
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "gearbalance:chipped_purified_topaz",
+    "gearbalance:chipped_purified_topaz",
+    "gearbalance:chipped_purified_topaz"
+  ],
+  "result": {
+    "count": 1,
+    "id": "gearbalance:cut_purified_topaz"
+  }
+}

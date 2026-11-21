@@ -1,0 +1,13 @@
+{
+  "fabric:load_conditions": {
+    "condition": "gearbalance:option",
+    "option": "titanium"
+  },
+  "type": "minecraft:smithing_transform",
+  "template": "gearbalance:titanium_upgrade_smithing_template",
+  "base": "minecraft:netherite_shovel",
+  "addition": "#gearbalance:titanium_tool_materials",
+  "result": {
+    "id": "gearbalance:titanium_shovel"
+  }
+}

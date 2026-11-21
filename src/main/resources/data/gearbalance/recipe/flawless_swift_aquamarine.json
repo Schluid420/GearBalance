@@ -1,0 +1,17 @@
+{
+  "fabric:load_conditions": {
+    "condition": "gearbalance:option",
+    "option": "sockets"
+  },
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "gearbalance:cut_swift_aquamarine",
+    "gearbalance:cut_swift_aquamarine",
+    "gearbalance:cut_swift_aquamarine"
+  ],
+  "result": {
+    "count": 1,
+    "id": "gearbalance:flawless_swift_aquamarine"
+  }
+}

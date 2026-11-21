@@ -1,0 +1,36 @@
+{
+  "parent": "gearbalance:compressed",
+  "criteria": {
+    "got": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "gearbalance:iron_forge_hammer",
+              "gearbalance:golden_forge_hammer",
+              "gearbalance:diamond_forge_hammer",
+              "gearbalance:netherite_forge_hammer"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "display": {
+    "icon": {
+      "id": "gearbalance:iron_forge_hammer"
+    },
+    "title": {
+      "translate": "advancements.gearbalance.forge_hammer.title"
+    },
+    "description": {
+      "translate": "advancements.gearbalance.forge_hammer.description"
+    }
+  },
+  "requirements": [
+    [
+      "got"
+    ]
+  ]
+}

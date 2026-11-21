@@ -1,0 +1,23 @@
+{
+  "fabric:load_conditions": {
+    "condition": "fabric:not",
+    "value": {
+      "condition": "gearbalance:option",
+      "option": "shields"
+    }
+  },
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "W": "#minecraft:wooden_tool_materials",
+    "o": "minecraft:iron_ingot"
+  },
+  "pattern": [
+    "WoW",
+    "WWW",
+    " W "
+  ],
+  "result": {
+    "id": "minecraft:shield"
+  }
+}

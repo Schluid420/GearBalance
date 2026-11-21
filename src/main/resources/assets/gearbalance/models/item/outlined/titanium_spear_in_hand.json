@@ -1,0 +1,77 @@
+{
+  "parent": "minecraft:item/spear_in_hand",
+  "textures": {
+    "layer0": "gearbalance:item/outlined/titanium_spear_in_hand",
+    "layer1": "gearbalance:item/outlined/titanium_spear_in_hand_ring"
+  },
+  "display": {
+    "firstperson_righthand": {
+      "rotation": [
+        -20,
+        90,
+        -35
+      ],
+      "translation": [
+        3.13,
+        2.0,
+        0.13
+      ],
+      "scale": [
+        1.53,
+        1.53,
+        0.68
+      ]
+    },
+    "firstperson_lefthand": {
+      "rotation": [
+        -20,
+        -90,
+        35
+      ],
+      "translation": [
+        3.13,
+        2.0,
+        0.13
+      ],
+      "scale": [
+        1.53,
+        1.53,
+        0.68
+      ]
+    },
+    "thirdperson_righthand": {
+      "rotation": [
+        5,
+        270,
+        -40
+      ],
+      "translation": [
+        0,
+        2,
+        2
+      ],
+      "scale": [
+        1.9125,
+        1.9125,
+        0.85
+      ]
+    },
+    "thirdperson_lefthand": {
+      "rotation": [
+        5,
+        -270,
+        40
+      ],
+      "translation": [
+        0,
+        2,
+        2
+      ],
+      "scale": [
+        1.9125,
+        1.9125,
+        0.85
+      ]
+    }
+  }
+}

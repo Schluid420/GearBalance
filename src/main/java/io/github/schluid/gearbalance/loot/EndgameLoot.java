@@ -17,12 +17,10 @@ import net.minecraft.world.level.storage.loot.BuiltInLootTables;
 import net.minecraft.world.level.storage.loot.LootTable;
 
 /**
- * Optional changes to the chests of the endgame areas: end cities and end ships, bastions, ancient cities
- * and the trial chamber vaults. Checked whenever a chest or vault is opened, so the switches apply at once.
- * The supply chests of trial chambers are left alone, their arrows and food are meant for the fight.
+ * Optional changes to endgame chests (end cities and ships, bastions, ancient cities, trial chamber vaults),
+ * checked when a chest or vault opens. Trial chamber supply chests are left alone.
  *
- * Enchanted books and plain books are never added, removed or replaced here, so a mod that controls
- * where books come from (EnchantPlus) keeps full control over them, whichever mod runs first.
+ * Books are never added, removed or replaced, so EnchantPlus keeps full control over them.
  */
 public final class EndgameLoot {
 	private EndgameLoot() {

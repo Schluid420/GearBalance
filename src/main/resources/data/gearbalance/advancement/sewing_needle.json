@@ -1,0 +1,33 @@
+{
+  "parent": "gearbalance:root",
+  "criteria": {
+    "got": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "gearbalance:sewing_needle"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "display": {
+    "icon": {
+      "id": "gearbalance:sewing_needle"
+    },
+    "title": {
+      "translate": "advancements.gearbalance.sewing_needle.title"
+    },
+    "description": {
+      "translate": "advancements.gearbalance.sewing_needle.description"
+    }
+  },
+  "requirements": [
+    [
+      "got"
+    ]
+  ]
+}

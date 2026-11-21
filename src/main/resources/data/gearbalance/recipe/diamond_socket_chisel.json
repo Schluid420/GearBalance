@@ -1,0 +1,21 @@
+{
+  "fabric:load_conditions": {
+    "condition": "gearbalance:option",
+    "option": "sockets_without_plan"
+  },
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "pattern": [
+    "  M",
+    " A ",
+    "S  "
+  ],
+  "key": {
+    "M": "minecraft:diamond",
+    "A": "minecraft:amethyst_shard",
+    "S": "minecraft:stick"
+  },
+  "result": {
+    "id": "gearbalance:diamond_socket_chisel"
+  }
+}

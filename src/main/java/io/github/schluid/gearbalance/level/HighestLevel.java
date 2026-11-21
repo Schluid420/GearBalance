@@ -9,10 +9,7 @@ import net.fabricmc.fabric.api.attachment.v1.AttachmentType;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.world.entity.player.Player;
 
-/**
- * Highest experience level the player has ever reached. It only goes up, so spending levels
- * or dying doesn't lock gear again. Synced to the own client for the tooltip.
- */
+/** Highest level the player ever reached; only goes up, so spending levels or dying doesn't lock gear. Synced for the tooltip. */
 public final class HighestLevel {
 	private HighestLevel() {
 	}

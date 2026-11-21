@@ -1,0 +1,25 @@
+{
+  "parent": "gearbalance:upgrade",
+  "criteria": {
+    "done": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "icon": {
+      "id": "minecraft:diamond_sword"
+    },
+    "title": {
+      "translate": "advancements.gearbalance.upgrade_max.title"
+    },
+    "description": {
+      "translate": "advancements.gearbalance.upgrade_max.description"
+    },
+    "frame": "challenge"
+  },
+  "requirements": [
+    [
+      "done"
+    ]
+  ]
+}

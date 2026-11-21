@@ -1,0 +1,37 @@
+{
+  "parent": "gearbalance:root",
+  "criteria": {
+    "got": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "gearbalance:copper_shield",
+              "gearbalance:iron_shield",
+              "gearbalance:golden_shield",
+              "gearbalance:diamond_shield",
+              "gearbalance:netherite_shield"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "display": {
+    "icon": {
+      "id": "gearbalance:iron_shield"
+    },
+    "title": {
+      "translate": "advancements.gearbalance.shield.title"
+    },
+    "description": {
+      "translate": "advancements.gearbalance.shield.description"
+    }
+  },
+  "requirements": [
+    [
+      "got"
+    ]
+  ]
+}

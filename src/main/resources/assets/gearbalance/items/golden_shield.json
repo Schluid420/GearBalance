@@ -1,0 +1,116 @@
+{
+  "model": {
+    "type": "minecraft:condition",
+    "on_false": {
+      "type": "minecraft:condition",
+      "property": "gearbalance:full_sockets",
+      "on_true": {
+        "type": "minecraft:select",
+        "property": "minecraft:display_context",
+        "cases": [
+          {
+            "when": [
+              "firstperson_righthand",
+              "firstperson_lefthand",
+              "thirdperson_righthand",
+              "thirdperson_lefthand"
+            ],
+            "model": {
+              "type": "minecraft:special",
+              "base": "gearbalance:item/golden_shield",
+              "model": {
+                "type": "gearbalance:shield",
+                "material": "golden",
+                "outline": true
+              }
+            }
+          }
+        ],
+        "fallback": {
+          "type": "minecraft:special",
+          "base": "gearbalance:item/golden_shield",
+          "model": {
+            "type": "gearbalance:shield",
+            "material": "golden"
+          }
+        }
+      },
+      "on_false": {
+        "type": "minecraft:special",
+        "base": "gearbalance:item/golden_shield",
+        "model": {
+          "type": "gearbalance:shield",
+          "material": "golden"
+        }
+      }
+    },
+    "on_true": {
+      "type": "minecraft:condition",
+      "property": "gearbalance:full_sockets",
+      "on_true": {
+        "type": "minecraft:select",
+        "property": "minecraft:display_context",
+        "cases": [
+          {
+            "when": [
+              "firstperson_righthand",
+              "firstperson_lefthand",
+              "thirdperson_righthand",
+              "thirdperson_lefthand"
+            ],
+            "model": {
+              "type": "minecraft:special",
+              "base": "gearbalance:item/golden_shield_blocking",
+              "model": {
+                "type": "gearbalance:shield",
+                "material": "golden",
+                "outline": true
+              }
+            }
+          }
+        ],
+        "fallback": {
+          "type": "minecraft:special",
+          "base": "gearbalance:item/golden_shield_blocking",
+          "model": {
+            "type": "gearbalance:shield",
+            "material": "golden"
+          }
+        }
+      },
+      "on_false": {
+        "type": "minecraft:special",
+        "base": "gearbalance:item/golden_shield_blocking",
+        "model": {
+          "type": "gearbalance:shield",
+          "material": "golden"
+        }
+      }
+    },
+    "property": "minecraft:using_item",
+    "transformation": {
+      "left_rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "right_rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "scale": [
+        1.0,
+        -1.0,
+        -1.0
+      ],
+      "translation": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    }
+  }
+}
