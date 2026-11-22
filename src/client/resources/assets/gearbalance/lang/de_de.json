@@ -667,6 +667,8 @@
 	"gearbalance.options.glow_pulse.tip": "Schein und Effekte werden langsam heller und dunkler. AUS: gleichbleibende Helligkeit. Schilde pulsieren nie.",
 	"gearbalance.options.hide_glint": "Verzauberungsschimmer aus",
 	"gearbalance.options.hide_glint.tip": "Blendet den Verzauberungsschimmer an Teilen mit vollen Sockeln aus, solange der Leucht-Umriss an ist. Die Stärke des Schimmers aller Gegenstände stellt das Spiel selbst unter Barrierefreiheit ein.",
+	"gearbalance.options.shield_glow_shaders": "Schild-Glow mit Shadern",
+	"gearbalance.options.shield_glow_shaders.tip": "Mit einem Shaderpack (Iris) kann der weiche Glow eines Schilds flackern. Aus: Solange Shader an sind, wird nur der Rahmen gezeigt. Ohne Shader ändert sich nichts.",
 	"gearbalance.menu.glow": "Leuchten",
 	"gearbalance.menu.glow.tip": "Leuchten bei vollen Sockeln: Umriss, Schein, Effekte, Farbe, Pulsieren und Schild. Nur für dich sichtbar.",
 	"gearbalance.config.glow.group.effect": "Schein & Effekte",

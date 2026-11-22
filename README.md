@@ -68,7 +68,7 @@ Each part has its own switch. Everything needs the sewing needle (iron nugget ab
 
 ### Shields
 
-Optional shields of wood, copper, iron, gold, diamond, netherite and titanium. The wooden shield replaces the vanilla recipe, vanilla shields you already have keep working. Better material means more durability, blocking sooner, a shorter lock after an axe hit, a wider explosion protection angle and a stronger parry. Every value can be set per shield. The tooltip shows parry window, blocked damage, blocking angle and durability.
+Optional shields of wood, copper, iron, gold, diamond, netherite and titanium. The wooden shield replaces the vanilla recipe, vanilla shields you already have keep working. Better material means more durability, blocking sooner, a shorter lock after an axe hit, a wider explosion protection angle and a stronger parry. Every value can be set per shield. The tooltip shows parry window, blocked damage and blocking angle; the durability is shown like on every other item.
 
 **Shield speed:** better shields let you walk faster while blocking: wood 20 % of normal speed as in vanilla, copper 25 %, gold 30 %, iron 35 %, diamond 40 %, netherite 45 %, titanium 50 %. Own switch, every value can be set per shield, applies after loading the world again.
 
@@ -88,7 +88,7 @@ The "Glow" tab sets it up:
 - **Outline:** saturation of the outline and its side faces.
 - **Color:** red, green and blue as sliders, one color for everything.
 - **Pulse:** on or off, strength and duration.
-- **Shield:** brightness of the frame and strength of the glow (shields don't pulse).
+- **Shield:** brightness of the frame and strength of the glow (shields don't pulse), and whether the soft glow is also shown with a shader pack (Iris).
 
 All textures of the glow and the effects are made for this mod.
 
@@ -127,12 +127,12 @@ Books are never added, removed or swapped, so mods that control where enchanted 
 
 All of these are only for you. Only lowering shield and fire is set by the server in multiplayer.
 
-- **Tooltips:** frames in the color of the material, name color by upgrade level (gold with all sockets filled), comparison with the worn piece by holding Shift, durability of every item and the uses left of the smithing tools.
+- **Tooltips:** frames in the color of the material, name color by upgrade level (gold with all sockets filled), comparison with the worn piece by holding Shift, durability of every item and the uses left of the smithing tools. With "Tooltip hints" gems, thread and the compressed materials say how they are made and what they are for.
 - **Pickups:** picked up items appear as tiles next to the hotbar, new items sparkle in the inventory until you hover them.
 - **Screen:** lower shield and fire in first person, a slight hand sway while standing, and a durability warning sound.
 - **Hotbar hiding:** the hotbar slides away after a few seconds without changing the slot and comes back on damage or when you are hungry. Optionally armor, experience or everything go with it.
 - **Inventory size:** own GUI size while the inventory is open, so the bag rows and the stats panel fit.
-- **Stats panel** with all bonuses of the worn gear.
+- **Stats panel** with all bonuses of the worn gear and the held item, and where each value comes from: armor, the item, upgrades and every gem type with its symbol.
 - **Armor bar:** every armor point in the color of the piece it comes from, cracks at two adjustable durability limits, darker with wear, red blinking when low and a grey symbol for worn-out or just broken pieces.
 - **HD symbols:** armor bar, hearts (optional silver ring for hearts from gear), food bar (optional golden drumsticks for saturation), hotbar, experience bar and level number in 4x resolution, each with its own switch.
 - **Hotbar animations:** pop of the selected item, red pulsing slot at low durability, item name animation and an animated experience bar with sparks and a sound on level up.
@@ -213,6 +213,10 @@ The server sends all its settings to every player when they join. The client onl
 ## Other mods
 
 Only vanilla items and vanilla chests are changed, gear and loot from other mods stay as they are. With JEI installed, the smithing recipes show up there and JEI keeps out of the way of the stats panel and the gear set buttons. With EnchantPlus installed, its books keep appearing in the endgame chests, and the extra lapis and experience bottles help with its enchanting costs. GearBalance also works well with HardmodePlus: the hotbar hiding moves its bars along, and the HM+ profiles match its profiles. It needs no other mod.
+
+**Tooltip mods:** GearBalance draws its own tooltip frames with a name head (item box and line) and works with Iceberg. Mods that draw tooltips completely by themselves, such as Legendary Tooltips, replace the whole tooltip: then switch off "Tooltip frames" in the GearBalance view settings, or the frames of the other mod.
+
+**Shader packs (Iris):** the glow of full sockets works with shaders. If the soft glow around a shield flickers with your shader pack, switch off "Shield glow with shaders" in the glow settings; the frame stays.
 
 **Add-ons:** other mods can bring their own materials and gear. They show up in every tab like the vanilla ones, with level, repair, weight and set bonus, and the presets and HM+ profiles set their values too. Without add-ons nothing changes. If you remove an add-on for a while, its saved values stay in the config and in your profiles.
 

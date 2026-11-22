@@ -7,9 +7,11 @@ import io.github.schluid.gearbalance.socket.Gems;
 import io.github.schluid.gearbalance.socket.Sockets;
 import io.github.schluid.gearbalance.socket.Titanite;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponents;
@@ -50,7 +52,8 @@ final class AttributeBreakdown {
 			return;
 		}
 		boolean armor = stack.getItem().components().has(DataComponents.EQUIPPABLE);
-		Map<String, Map<String, GemPart>> gems = gemParts(stack, armor);
+		Set<String> percentKeys = new HashSet<>();
+		Map<String, Map<String, GemPart>> gems = gemParts(stack, armor, percentKeys);
 
 		// Find the attribute lines; lines of the same attribute and kind are merged into the first one
 		Map<String, Found> first = new LinkedHashMap<>();
@@ -75,16 +78,26 @@ final class AttributeBreakdown {
 		for (Map.Entry<String, Found> entry : first.entrySet()) {
 			Found found = entry.getValue();
 			double total = totals.get(entry.getKey());
-			Map<String, GemPart> parts = gems.getOrDefault(found.attribute() + "|" + found.operation(), Map.of());
+			String gemKey = found.attribute() + "|" + found.operation();
+			Map<String, GemPart> parts = gems.getOrDefault(gemKey, Map.of());
 			double gemTotal = 0;
 			for (GemPart part : parts.values()) {
 				gemTotal += part.amount;
 			}
-			// A line that got others merged into it is written anew with the total
-			MutableComponent line = counts.get(entry.getKey()) > 1 && !found.equals()
-					? rebuild(found, total)
-					: lines.get(found.index()).copy();
-			line.append(breakdown(symbol, total - gemTotal, parts));
+			// Gem bonuses typed in percent but added as a plain value (e.g. submerged mining speed): vanilla shows
+			// "+0.05", the line is shown in percent like the gem ("+5 %"), its parts too
+			boolean percent = !found.equals() && found.operation() == 0 && !parts.isEmpty() && percentKeys.contains(gemKey);
+			MutableComponent line;
+			if (percent) {
+				total *= found.attribute().equals(Attributes.KNOCKBACK_RESISTANCE.value().getDescriptionId()) ? 10 : 100;
+				line = rebuildPercent(found, total);
+			} else {
+				// A line that got others merged into it is written anew with the total
+				line = counts.get(entry.getKey()) > 1 && !found.equals()
+						? rebuild(found, total)
+						: lines.get(found.index()).copy();
+			}
+			line.append(breakdown(symbol, total - gemTotal, parts, percent));
 			lines.set(found.index(), line);
 		}
 		// Remove merged lines from the bottom up, so the indexes stay right
@@ -145,8 +158,17 @@ final class AttributeBreakdown {
 				.withStyle(minus ? ChatFormatting.RED : ChatFormatting.BLUE);
 	}
 
-	/** " (chestplate 0.38 + onyx 0.2)": the item's own part, then each gem type in its color. */
-	private static Component breakdown(char symbol, double own, Map<String, GemPart> parts) {
+	/** "+5 % Submerged Mining Speed": a plain-value line in percent, with vanilla's percent format and colors. */
+	private static MutableComponent rebuildPercent(Found found, double percent) {
+		boolean minus = percent < 0;
+		return Component.translatable("attribute.modifier." + (minus ? "take." : "plus.") + "1",
+				ItemAttributeModifiers.ATTRIBUTE_MODIFIER_FORMAT.format(Math.abs(percent)), found.name())
+				.withStyle(minus ? ChatFormatting.RED : ChatFormatting.BLUE);
+	}
+
+	/** " (chestplate 0.38 + onyx 0.2)": the item's own part, then each gem type in its color; with "%" on percent lines. */
+	private static Component breakdown(char symbol, double own, Map<String, GemPart> parts, boolean percent) {
+		String unit = percent ? "%" : "";
 		MutableComponent text = Component.empty();
 		boolean hasOwn = parts.isEmpty() || Math.abs(own) > 0.0001;
 		// Only one source (the item itself or one gem type): just its symbol, without brackets and numbers
@@ -157,7 +179,7 @@ final class AttributeBreakdown {
 		text.append(Component.literal(" (").withStyle(ChatFormatting.DARK_GRAY));
 		boolean firstPart = true;
 		if (hasOwn) {
-			text.append(symbol(symbol + GAP)).append(Component.literal(number(own)).withStyle(ChatFormatting.BLUE));
+			text.append(symbol(symbol + GAP)).append(Component.literal(number(own) + unit).withStyle(ChatFormatting.BLUE));
 			firstPart = false;
 		}
 		for (Map.Entry<String, GemPart> entry : parts.entrySet()) {
@@ -166,7 +188,7 @@ final class AttributeBreakdown {
 			}
 			firstPart = false;
 			text.append(symbol(gemSymbol(entry) + GAP));
-			text.append(GearBalanceClient.gemColored(entry.getKey(), Component.literal(number(entry.getValue().amount))));
+			text.append(GearBalanceClient.gemColored(entry.getKey(), Component.literal(number(entry.getValue().amount) + unit)));
 		}
 		text.append(Component.literal(")").withStyle(ChatFormatting.DARK_GRAY));
 		return text;
@@ -189,8 +211,11 @@ final class AttributeBreakdown {
 		return ItemAttributeModifiers.ATTRIBUTE_MODIFIER_FORMAT.format(value);
 	}
 
-	/** Gem parts per "attribute description id|operation id" and gem type, in tooltip units (percent; knockback x10). */
-	private static Map<String, Map<String, GemPart>> gemParts(ItemStack stack, boolean armor) {
+	/**
+	 * Gem parts per "attribute description id|operation id" and gem type, in tooltip units (percent; knockback x10).
+	 * Bonuses typed in percent but added as a plain value are kept in percent; their keys go into percentKeys.
+	 */
+	private static Map<String, Map<String, GemPart>> gemParts(ItemStack stack, boolean armor, Set<String> percentKeys) {
 		Map<String, Map<String, GemPart>> result = new LinkedHashMap<>();
 		double factor = Titanite.factor(stack);
 		for (String id : Sockets.sockets(stack)) {
@@ -207,8 +232,15 @@ final class AttributeBreakdown {
 				double amount = kind.modifierAmount(bonus.amount(cut) * factor);
 				boolean add = kind.operation() == AttributeModifier.Operation.ADD_VALUE;
 				for (Holder<Attribute> attribute : kind.attributes()) {
-					double shown = add ? (attribute.value() == Attributes.KNOCKBACK_RESISTANCE.value() ? amount * 10 : amount) : amount * 100;
 					String key = attribute.value().getDescriptionId() + "|" + kind.operation().id();
+					double shown;
+					if (add && kind.percent()) {
+						// Shown in percent, as typed: 5 stays 5
+						shown = amount * 100;
+						percentKeys.add(key);
+					} else {
+						shown = add ? (attribute.value() == Attributes.KNOCKBACK_RESISTANCE.value() ? amount * 10 : amount) : amount * 100;
+					}
 					GemPart part = result.computeIfAbsent(key, k -> new LinkedHashMap<>()).computeIfAbsent(type, t -> new GemPart());
 					part.amount += shown;
 					part.cut = Math.max(part.cut, cut);

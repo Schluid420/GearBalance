@@ -1,9 +1,11 @@
 package io.github.schluid.gearbalance.client;
 
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.world.item.ItemStack;
 import org.jspecify.annotations.Nullable;
@@ -32,6 +34,24 @@ public final class TooltipHead implements ClientTooltipComponent {
 			return 0;
 		}
 	};
+
+	/**
+	 * The name line when another tooltip mod (Iceberg) rebuilt the lines with its own parts: a part one line high
+	 * with the width of the item's name is taken as the name. Null if it doesn't match, then the tooltip stays as it is.
+	 */
+	public static @Nullable FormattedCharSequence nameOf(ClientTooltipComponent first, @Nullable ItemStack stack, Font font) {
+		if (stack == null || stack.isEmpty()) {
+			return null;
+		}
+		MutableComponent name = stack.getHoverName().copy();
+		ChatFormatting color = ComfortClient.nameColor(stack);
+		if (color != null) {
+			name.withStyle(color);
+		}
+		FormattedCharSequence text = name.getVisualOrderText();
+		boolean oneLine = first.getHeight(font) <= 12;
+		return oneLine && Math.abs(first.getWidth(font) - font.width(text)) <= 1 ? text : null;
+	}
 
 	private final @Nullable ItemStack stack;
 	private final FormattedCharSequence name;

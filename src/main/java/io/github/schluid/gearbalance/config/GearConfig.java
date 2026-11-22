@@ -1093,7 +1093,7 @@ public final class GearConfig {
 	/** Numbers of the view and the glow; like CLIENT_OPTIONS they stay the player's own on a server. */
 	private static final List<String> CLIENT_VALUES = List.of("effectRed",
 			"effectGreen", "effectBlue", "handEffect", "effectBrightness", "ringSaturation", "glowPulse", "pulseStrength",
-			"pulseSeconds", "shieldGlow", "shieldFrame", "hideGlint", "pickupSeconds", "pickupRows", "pickupScale",
+			"pulseSeconds", "shieldGlow", "shieldFrame", "shieldGlowShaders", "hideGlint", "pickupSeconds", "pickupRows", "pickupScale",
 			"handIdlePercent", "durabilityWarningPercent", "inventoryGuiScale", "armorCrackPercent",
 			"armorCrack2Percent", "armorDarkenPercent", "armorBlinkPercent", "hotbarPopPercent", "hotbarGlowPercent");
 
@@ -1863,6 +1863,7 @@ public final class GearConfig {
 		pulseSeconds = DEFAULT_PULSE_SECONDS;
 		shieldGlow = DEFAULT_SHIELD_GLOW;
 		shieldFrame = DEFAULT_SHIELD_FRAME;
+		shieldGlowShaders = true;
 		hideGlint = false;
 		pickupSeconds = DEFAULT_PICKUP_SECONDS;
 		pickupRows = DEFAULT_PICKUP_ROWS;
@@ -2114,6 +2115,8 @@ public final class GearConfig {
 	/** Brightness of the frame around a shield plate with full sockets, percent of the outline color. */
 	public static int shieldFrame;
 	public static final int DEFAULT_SHIELD_FRAME = 70;
+	/** The soft shield glow also while a shader pack (Iris) is in use; off leaves only the frame there. */
+	public static boolean shieldGlowShaders;
 	/** Hides the enchantment glint of pieces with full sockets while the glow is on. */
 	public static boolean hideGlint;
 	/** Picked up items: seconds a line stays, lines at most, size in percent. */
@@ -2250,6 +2253,7 @@ public final class GearConfig {
 		pulseSeconds = whole(o, "pulseSeconds", pulseSeconds, 1, MAX_PULSE_SECONDS);
 		shieldGlow = whole(o, "shieldGlow", shieldGlow, 0, 100);
 		shieldFrame = whole(o, "shieldFrame", shieldFrame, 0, 100);
+		shieldGlowShaders = bool(o, "shieldGlowShaders", shieldGlowShaders);
 		hideGlint = bool(o, "hideGlint", hideGlint);
 		pickupSeconds = whole(o, "pickupSeconds", pickupSeconds, 1, MAX_PICKUP_SECONDS);
 		pickupRows = whole(o, "pickupRows", pickupRows, 1, MAX_PICKUP_ROWS);
@@ -2447,6 +2451,7 @@ public final class GearConfig {
 		o.addProperty("pulseSeconds", pulseSeconds);
 		o.addProperty("shieldGlow", shieldGlow);
 		o.addProperty("shieldFrame", shieldFrame);
+		o.addProperty("shieldGlowShaders", shieldGlowShaders);
 		o.addProperty("hideGlint", hideGlint);
 		o.addProperty("pickupSeconds", pickupSeconds);
 		o.addProperty("pickupRows", pickupRows);

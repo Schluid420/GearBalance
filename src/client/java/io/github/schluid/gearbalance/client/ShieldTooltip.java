@@ -10,7 +10,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.BlocksAttacks;
 
-/** Shield tooltip (switch "New shields"): parry window, blocked damage, blocking angles and durability. */
+/** Shield tooltip (switch "New shields"): parry window, blocked damage and blocking angles; durability is the grey line of all items. */
 final class ShieldTooltip {
 	private ShieldTooltip() {
 	}
@@ -44,9 +44,6 @@ final class ShieldTooltip {
 			} else {
 				lines.add(line("gearbalance.shield.angle", Numbers.format(normal.horizontalBlockingAngle())));
 			}
-		}
-		if (stack.isDamageableItem()) {
-			lines.add(line("gearbalance.shield.durability", stack.getMaxDamage() - stack.getDamageValue(), stack.getMaxDamage()));
 		}
 	}
 

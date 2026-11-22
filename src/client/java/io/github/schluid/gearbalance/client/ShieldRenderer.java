@@ -57,6 +57,9 @@ final class ShieldRenderer implements SpecialModelRenderer<DataComponentMap> {
 	/** How far the glow reaches past the plate: 4 pixels, the size the glow texture is made for. */
 	private static final float GLOW = 4 * PX;
 	private static final int FULL_BRIGHT = 0xF000F0;
+	/** Distance of the outline and glow planes from the plate (model units); larger with shader packs. */
+	private static final float OUTLINE_GAP = 0.003F, OUTLINE_GAP_SHADERS = 0.008F;
+	private static final float GLOW_GAP = 0.012F, GLOW_GAP_SHADERS = 0.03F;
 
 	private ShieldRenderer(SpriteGetter sprites, ShieldModel model, String material, boolean outline) {
 		this.sprites = sprites;
@@ -105,14 +108,16 @@ final class ShieldRenderer implements SpecialModelRenderer<DataComponentMap> {
 		if (outline) {
 			// The frame is lit fully, so it is darkened to sit with the outline of held items
 			int ring = scaleRgb(EffectTint.ringColor(), GearConfig.shieldFrame / 100.0F);
+			// Shader packs (Iris) draw the hand in their own pass with less depth precision: the planes keep more distance
+			boolean shaders = Shaders.active();
 			collector.submitCustomGeometry(poseStack, RenderTypes.entityCutout(OUTLINE_TEXTURE),
-					(pose, consumer) -> drawOutline(pose, consumer, ring));
+					(pose, consumer) -> drawOutline(pose, consumer, ring, shaders));
 			// No pulse on shields; the frame is opaque (cutout), so the glow in front cannot hide parts of it
 			int glow = scaleAlpha(EffectTint.glowColorSteady(), GearConfig.shieldGlow / 100.0F);
-			if (glow >>> 24 > 0) {
+			if (glow >>> 24 > 0 && (!shaders || GearConfig.shieldGlowShaders)) {
 				// eyes: blended without depth writes, so the glow never hides the frame or itself
 				collector.submitCustomGeometry(poseStack, RenderTypes.eyes(GLOW_TEXTURE),
-						(pose, consumer) -> drawGlow(pose, consumer, glow));
+						(pose, consumer) -> drawGlow(pose, consumer, glow, shaders));
 			}
 		}
 	}
@@ -131,29 +136,45 @@ final class ShieldRenderer implements SpecialModelRenderer<DataComponentMap> {
 	}
 
 	/** Two flat planes just in front of and behind the plate, reaching GLOW past its edges. */
-	private static void drawGlow(PoseStack.Pose pose, VertexConsumer consumer, int color) {
+	private static void drawGlow(PoseStack.Pose pose, VertexConsumer consumer, int color, boolean shaders) {
 		float a0 = X0 - GLOW, a1 = X1 + GLOW, b0 = Y0 - GLOW, b1 = Y1 + GLOW;
 		// Clearly off the plate and the outline: closer planes flickered (z-fighting)
-		float zf = Z0 - 0.012F, zb = Z1 + 0.012F;
+		float gap = shaders ? GLOW_GAP_SHADERS : GLOW_GAP;
+		float zf = Z0 - gap, zb = Z1 + gap;
 		face(pose, consumer, color, a0, b0, zf, a1, b0, zf, a1, b1, zf, a0, b1, zf, 0, 0, -1);
 		face(pose, consumer, color, a0, b0, zb, a1, b0, zb, a1, b1, zb, a0, b1, zb, 0, 0, 1);
 	}
 
-	/** A ring around the plate: front and back faces plus the outer edge, every face drawn from both sides. */
-	private static void drawOutline(PoseStack.Pose pose, VertexConsumer consumer, int color) {
+	/**
+	 * A ring around the plate: front and back faces plus the outer edge. Each face only once: entityCutout draws both
+	 * sides anyway, and a second face at the same place with the opposite normal flickered with shader packs
+	 * (they light by the normal, so the two faces fought for every pixel).
+	 */
+	private static void drawOutline(PoseStack.Pose pose, VertexConsumer consumer, int color, boolean shaders) {
 		float a0 = X0 - WIDTH, a1 = X1 + WIDTH, b0 = Y0 - WIDTH, b1 = Y1 + WIDTH;
-		float zf = Z0 - 0.003F, zb = Z1 + 0.003F;
+		float gap = shaders ? OUTLINE_GAP_SHADERS : OUTLINE_GAP;
+		float zf = Z0 - gap, zb = Z1 + gap;
 		for (float z : new float[] {zf, zb}) {
 			float nz = z == zf ? -1 : 1;
-			face(pose, consumer, color, a0, b0, z, a1, b0, z, a1, Y0, z, a0, Y0, z, 0, 0, nz);
-			face(pose, consumer, color, a0, Y1, z, a1, Y1, z, a1, b1, z, a0, b1, z, 0, 0, nz);
-			face(pose, consumer, color, a0, Y0, z, X0, Y0, z, X0, Y1, z, a0, Y1, z, 0, 0, nz);
-			face(pose, consumer, color, X1, Y0, z, a1, Y0, z, a1, Y1, z, X1, Y1, z, 0, 0, nz);
+			faceOnce(pose, consumer, color, a0, b0, z, a1, b0, z, a1, Y0, z, a0, Y0, z, 0, 0, nz);
+			faceOnce(pose, consumer, color, a0, Y1, z, a1, Y1, z, a1, b1, z, a0, b1, z, 0, 0, nz);
+			faceOnce(pose, consumer, color, a0, Y0, z, X0, Y0, z, X0, Y1, z, a0, Y1, z, 0, 0, nz);
+			faceOnce(pose, consumer, color, X1, Y0, z, a1, Y0, z, a1, Y1, z, X1, Y1, z, 0, 0, nz);
 		}
-		face(pose, consumer, color, a0, b0, zf, a0, b0, zb, a0, b1, zb, a0, b1, zf, -1, 0, 0);
-		face(pose, consumer, color, a1, b0, zf, a1, b1, zf, a1, b1, zb, a1, b0, zb, 1, 0, 0);
-		face(pose, consumer, color, a0, b0, zf, a1, b0, zf, a1, b0, zb, a0, b0, zb, 0, -1, 0);
-		face(pose, consumer, color, a0, b1, zf, a0, b1, zb, a1, b1, zb, a1, b1, zf, 0, 1, 0);
+		faceOnce(pose, consumer, color, a0, b0, zf, a0, b0, zb, a0, b1, zb, a0, b1, zf, -1, 0, 0);
+		faceOnce(pose, consumer, color, a1, b0, zf, a1, b1, zf, a1, b1, zb, a1, b0, zb, 1, 0, 0);
+		faceOnce(pose, consumer, color, a0, b0, zf, a1, b0, zf, a1, b0, zb, a0, b0, zb, 0, -1, 0);
+		faceOnce(pose, consumer, color, a0, b1, zf, a0, b1, zb, a1, b1, zb, a1, b1, zf, 0, 1, 0);
+	}
+
+	/** One quad in one winding, for render types that draw both sides. */
+	private static void faceOnce(PoseStack.Pose pose, VertexConsumer consumer, int color, float x1, float y1, float z1,
+			float x2, float y2, float z2, float x3, float y3, float z3, float x4, float y4, float z4,
+			float nx, float ny, float nz) {
+		vertex(pose, consumer, color, x1, y1, z1, 0, 0, nx, ny, nz);
+		vertex(pose, consumer, color, x2, y2, z2, 1, 0, nx, ny, nz);
+		vertex(pose, consumer, color, x3, y3, z3, 1, 1, nx, ny, nz);
+		vertex(pose, consumer, color, x4, y4, z4, 0, 1, nx, ny, nz);
 	}
 
 	/** One quad, once in each winding so it shows from both sides. */

@@ -5,19 +5,38 @@ All notable changes to this project are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.3] - 2026-11-22
+
+Hotfix for 1.1.2
+
+### Fixed
+
+- Bags: opening or closing the worn bag moved the whole inventory window. It now keeps its place.
+- Hotbar hiding: the HD level number stayed on screen while the experience bar slid away. It now moves with it.
+- Tooltip frames with Iceberg (and mods built on it): the name head with item box and line was missing and empty lines were too high, because Iceberg rebuilds the tooltip lines after GearBalance had set the head. GearBalance now sets it again right before the tooltip is measured.
+- Shields: the durability was shown twice (grey and in the blue shield lines). Now shields show only the grey durability line, like all other items.
+- Shield frame with shader packs (Iris): the frame flickered. Each of its faces was drawn twice at the same place with opposite normals; shaders light by the normal, so the two faces fought for every pixel. Each face is now drawn once (the render type shows both sides anyway). With shaders the frame and glow planes also keep more distance from the plate.
+- Gem tooltips: bonuses set in percent but added as a plain value (submerged mining speed, sweeping damage, knockback and explosion knockback resistance, water movement, sneaking speed) showed as decimals like "+0.05". The attribute line and its parts now show percent like the gem, e.g. "+5 %".
+
+### Added
+
+- Bonus panel ("Bonuses (worn)"): new frame in titanium blue with a double line, corner brackets and a head bar with two diamonds.
+- Bonus panel: the sources of a value are shown with the symbols of the item tooltips instead of words: chestplate for armor, sword or shield for the held item, and each gem type with its own symbol and color.
+- Glow settings: "Shield glow with shaders" (on by default). Off shows only the frame while a shader pack is in use.
+- Tooltip hints: thread and the compressed materials (including the compressed phantom membrane) now say how they are made and what they are for, like the gems.
+
+### Notes
+
+- Tooltip mods: GearBalance draws its own tooltip frames with a name head (item box and line). With Iceberg alone this now works. Mods that draw tooltips completely by themselves (for example Legendary Tooltips, which is built on Iceberg) replace the whole tooltip; then the GearBalance head can be missing or two frame styles can mix. In that case switch off "Tooltip frames" in the GearBalance view settings, or the frames of the other mod. Iceberg and Prism are only libraries: if no other mod needs them, they can be removed.
+- Shader packs (Iris): if the soft shield glow flickers, switch off "Shield glow with shaders" in the glow settings; the frame stays.
+
 ## [1.1.2] - 2026-11-22
 
-Hotfix for 1.1.1.
+Hotfix for 1.1.1
 
 ### Fixed
 
 - Creative inventory: the search found nothing. Some tooltips (hints of titanite and the titanium template, and the compare line while wearing gear) could only be built on the render thread, and the search builds its index on another thread. The search works again.
-- Bags: opening or closing the worn bag moved the whole inventory window. It now keeps its place.
-- Hotbar hiding: the HD level number stayed on screen while the experience bar slid away. It now moves with it.
-
-### Added
-
-- Tooltip hints: thread and the compressed materials (including the compressed phantom membrane) now say how they are made and what they are for, like the gems.
 
 ## [1.1.1] - 2026-11-22
 

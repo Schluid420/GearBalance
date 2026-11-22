@@ -1,9 +1,14 @@
 package io.github.schluid.gearbalance.client;
 
 import io.github.schluid.gearbalance.client.mixin.AbstractContainerScreenAccessor;
+import io.github.schluid.gearbalance.comfort.BreakProtection;
 import io.github.schluid.gearbalance.config.GearConfig;
+import io.github.schluid.gearbalance.shield.Shields;
 import io.github.schluid.gearbalance.socket.GemBonuses;
+import io.github.schluid.gearbalance.socket.GemValues;
+import io.github.schluid.gearbalance.socket.Gems;
 import io.github.schluid.gearbalance.socket.Sockets;
+import io.github.schluid.gearbalance.socket.Titanite;
 import io.github.schluid.gearbalance.upgrade.Upgrades;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
@@ -30,9 +35,12 @@ import net.minecraft.client.renderer.Rect2i;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.locale.Language;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.FormattedText;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.Identifier;
+import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
@@ -44,7 +52,7 @@ import net.minecraft.world.item.component.ItemAttributeModifiers;
 
 /**
  * Inventory: an armor button opens a panel on the right listing what worn armor and the held item give,
- * one line per value with its sources, e.g. "Armor Toughness 12 (8 Armor / 4 Gems)".
+ * one line per value with its sources as symbols, e.g. "Armor Toughness 12 (chestplate 8 / onyx 4)".
  * Only values the gear changes are listed; the panel stays open until the button is pressed again.
  */
 final class StatsPanel {
@@ -64,9 +72,21 @@ final class StatsPanel {
 	private static final int ROW_HEIGHT = 8;
 	private static final int TITLE_HEIGHT = 12;
 
-	private static final int BACKGROUND = 0xF0100010;
-	private static final int FRAME = 0xFF5000A0;
+	/**
+	 * Frame in titanium blue (the color of titanium tooltips): double line, corner brackets with a light point,
+	 * blue head bar with a line and two diamonds.
+	 */
+	private static final int EDGE = 0xFF0E1119, FRAME_LINE = 0xFF96AAD2, FRAME_LIGHT = 0xFFB4C4E6, FRAME_DARK = 0xFF34405C,
+			GAP_DARK = 0xFF131721, BACKGROUND = 0xF6161B28, HEAD = 0xFF3A4A70, SPARK = 0xFFF2F6FF;
+	/** Width of the frame lines; the content starts inside. */
+	private static final int INSET = 4;
+	/** Top of the first line: below the head bar and its line. */
+	private static final int CONTENT_TOP = INSET + TITLE_HEIGHT + 3;
 	private static final int HEADING = 0xFFFFC850;
+	/** Symbols of the socket font for the sources, the same as in item tooltips: chestplate, sword, shield. */
+	private static final char ARMOR_ICON_CHAR = '\uE032', TOOL_ICON_CHAR = '\uE030', SHIELD_ICON_CHAR = '\uE034';
+	/** Small gap between a symbol and its number: two 1-pixel spacers of the socket font. */
+	private static final String ICON_GAP = "\uE033\uE033";
 	private static final int TITLE = 0xFFFFFFFF;
 	private static final float MIN_SCALE = 0.5F;
 
@@ -164,6 +184,19 @@ final class StatsPanel {
 	private static final class Value {
 		final double[] parts = new double[4];
 		boolean percent;
+		/** The gem part split by gem type, to show each with its symbol. */
+		final Map<String, GemShare> gems = new LinkedHashMap<>();
+	}
+
+	/** What the gems of one type add to a value, and their highest cut (for the symbol). */
+	private static final class GemShare {
+		double amount;
+		int cut;
+
+		void add(double value, int gemCut) {
+			amount += value;
+			cut = Math.max(cut, gemCut);
+		}
 	}
 
 	private static final int ITEM = 0, UPGRADE = 1, GEMS = 2, GEARBALANCE = 3;
@@ -192,8 +225,39 @@ final class StatsPanel {
 				value.parts[UPGRADE] += upgrade;
 				value.parts[GEMS] += gem;
 			}
+			addGemTypes(stack, values);
 		}
 		return values;
+	}
+
+	/** What each gem type of the piece adds to the values (attribute keys as in sums()), for the symbols. */
+	private static void addGemTypes(ItemStack stack, Map<String, Value> values) {
+		if (!Sockets.active() || BreakProtection.wornOut(stack)) {
+			return;
+		}
+		boolean armor = stack.getItem().components().has(DataComponents.EQUIPPABLE);
+		double factor = Titanite.factor(stack);
+		for (String id : Sockets.sockets(stack)) {
+			String type = Gems.typeOf(id);
+			if (type == null) {
+				continue;
+			}
+			int cut = Gems.cutOf(id);
+			for (GemValues.Bonus bonus : GemValues.on(id, armor)) {
+				GemBonuses.Bonus kind = bonus.kind();
+				if (kind.special() != GemBonuses.Special.NONE) {
+					continue;
+				}
+				double amount = kind.modifierAmount(bonus.amount(cut) * factor);
+				String suffix = kind.operation() == AttributeModifier.Operation.ADD_MULTIPLIED_BASE ? "%" : "";
+				for (Holder<Attribute> attribute : kind.attributes()) {
+					Value value = values.get(attribute.getRegisteredName() + suffix);
+					if (value != null) {
+						value.gems.computeIfAbsent(type, t -> new GemShare()).add(amount, cut);
+					}
+				}
+			}
+		}
 	}
 
 	/** Attribute id (with "%" for multiplied modifiers) -> sum of the modifiers for this slot. */
@@ -237,15 +301,26 @@ final class StatsPanel {
 				List.of(EquipmentSlot.HEAD, EquipmentSlot.CHEST, EquipmentSlot.LEGS, EquipmentSlot.FEET, EquipmentSlot.OFFHAND));
 		// What GearBalance changes on the player itself (armor weight, set bonus ...) goes straight into the values
 		addGearBalance(player, armorValues);
-		armorValues.forEach((key, value) -> addLine(armor, key, value, bonuses, "gearbalance.stats.part.armor", 0));
+		armorValues.forEach((key, value) -> addLine(armor, key, value, bonuses, ARMOR_ICON_CHAR, 0));
 		for (GemBonuses.Special special : GemBonuses.Special.values()) {
 			double resistance = Sockets.resistance(player, special);
 			if (special != GemBonuses.Special.NONE && resistance > 0) {
 				String id = special.name().toLowerCase(Locale.ROOT) + "_resistance";
+				MutableComponent sources = Component.empty();
+				Map<String, GemShare> shares = resistanceShares(player, special);
+				if (shares.isEmpty()) {
+					sources.append(Component.translatable("gearbalance.stats.part.gems"));
+				}
+				int count = 0;
+				for (Map.Entry<String, GemShare> share : shares.entrySet()) {
+					if (count++ > 0) {
+						sources.append(" / ");
+					}
+					sources.append(gemPart(share.getKey(), share.getValue(), FORMAT.format(share.getValue().amount) + "%"));
+				}
 				armor.add(Component.translatable("gearbalance.bonus." + id).withStyle(ChatFormatting.GRAY)
 						.append(Component.literal(" " + FORMAT.format(resistance * 100) + "%").withStyle(ChatFormatting.GREEN))
-						.append(Component.literal(" (").append(Component.translatable("gearbalance.stats.part.gems"))
-								.append(")").withStyle(ChatFormatting.DARK_GRAY)));
+						.append(Component.literal(" (").append(sources).append(")").withStyle(ChatFormatting.DARK_GRAY)));
 			}
 		}
 		if (!armor.isEmpty()) {
@@ -258,7 +333,7 @@ final class StatsPanel {
 			// Like the item tooltip: damage and speed include the player's base value
 			double base = key.equals(Attributes.ATTACK_DAMAGE.getRegisteredName()) ? 1
 					: key.equals(Attributes.ATTACK_SPEED.getRegisteredName()) ? 4 : 0;
-			addLine(handLines, key, value, bonuses, "gearbalance.stats.part.item", base);
+			addLine(handLines, key, value, bonuses, Shields.isShield(hand) ? SHIELD_ICON_CHAR : TOOL_ICON_CHAR, base);
 		});
 		if (!handLines.isEmpty()) {
 			lines.add(new Line(Component.translatable("gearbalance.stats.hand", hand.getHoverName()), true));
@@ -296,9 +371,9 @@ final class StatsPanel {
 		}
 	}
 
-	/** "Armor Toughness 12 (8 Armor / 4 Gems)"; nothing for a value of 0. */
+	/** "Armor Toughness 12 (chestplate 8 / onyx 4)" with symbols; nothing for a value of 0. */
 	private static void addLine(List<Component> lines, String key, Value value, Map<String, GemBonuses.Bonus> bonuses,
-			String itemPart, double base) {
+			char itemIcon, double base) {
 		String attributeId = key.endsWith("%") ? key.substring(0, key.length() - 1) : key;
 		// Reach changes two attributes: show it once
 		if (attributeId.equals(Attributes.BLOCK_INTERACTION_RANGE.getRegisteredName())) {
@@ -315,7 +390,6 @@ final class StatsPanel {
 		MutableComponent line = Component.empty().append(name.copy().withStyle(ChatFormatting.GRAY));
 		line.append(Component.literal(" " + number(total, percent, value.percent))
 				.withStyle(total - base >= 0 ? ChatFormatting.GREEN : ChatFormatting.RED));
-		String[] keys = {itemPart, "gearbalance.stats.part.upgrades", "gearbalance.stats.part.gems"};
 		MutableComponent split = Component.empty();
 		int count = 0;
 		for (int i = 0; i < 3; i++) {
@@ -323,10 +397,25 @@ final class StatsPanel {
 			if (Math.abs(part) < 1.0E-6) {
 				continue;
 			}
+			// Gems: each type with its symbol and color, as long as the split adds up to the gem part
+			if (i == GEMS && gemsAddUp(value)) {
+				for (Map.Entry<String, GemShare> gem : value.gems.entrySet()) {
+					if (count++ > 0) {
+						split.append(" / ");
+					}
+					split.append(gemPart(gem.getKey(), gem.getValue(), number(gem.getValue().amount, percent, false)));
+				}
+				continue;
+			}
 			if (count++ > 0) {
 				split.append(" / ");
 			}
-			split.append(number(part, percent, false) + " ").append(Component.translatable(keys[i]));
+			if (i == ITEM) {
+				split.append(icon(itemIcon)).append(number(part, percent, false));
+			} else {
+				split.append(number(part, percent, false) + " ")
+						.append(Component.translatable(i == UPGRADE ? "gearbalance.stats.part.upgrades" : "gearbalance.stats.part.gems"));
+			}
 		}
 		// Where it comes from (what GearBalance adds is in the total but not listed)
 		if (count > 0) {
@@ -359,30 +448,121 @@ final class StatsPanel {
 		int x = panelX(screen);
 		int width = panelWidth(screen);
 		int y = guiTop(screen);
-		int rows = Math.max(1, (GUI_HEIGHT - TITLE_HEIGHT - 4) / ROW_HEIGHT);
+		int track = GUI_HEIGHT - CONTENT_TOP - INSET - 1;
+		int rows = Math.max(1, track / ROW_HEIGHT);
 		scroll = Math.min(scroll, Math.max(0, lines.size() - rows));
-		graphics.fill(x, y, x + width, y + GUI_HEIGHT, BACKGROUND);
-		graphics.outline(x, y, width, GUI_HEIGHT, FRAME);
+		drawFrame(graphics, x, y, width, GUI_HEIGHT);
+		// Title in the head bar, left of the two diamonds
 		drawFitted(graphics, font, Component.translatable("gearbalance.stats.title").withStyle(ChatFormatting.BOLD),
-				x + 4, y + 4, width - 8, TITLE);
+				x + INSET + 3, y + INSET + 2, width - 2 * INSET - 22, TITLE);
 		if (lines.isEmpty()) {
-			drawFitted(graphics, font, Component.translatable("gearbalance.stats.none"), x + 4, y + TITLE_HEIGHT + 2,
-					width - 8, 0xFFAAAAAA);
+			drawFitted(graphics, font, Component.translatable("gearbalance.stats.none"), x + INSET + 2, y + CONTENT_TOP,
+					width - 2 * INSET - 4, 0xFFAAAAAA);
 			return;
 		}
 		for (int i = 0; i < rows && scroll + i < lines.size(); i++) {
 			Line line = lines.get(scroll + i);
 			boolean heading = line.heading();
-			int lineY = y + TITLE_HEIGHT + 2 + i * ROW_HEIGHT;
+			int lineY = y + CONTENT_TOP + i * ROW_HEIGHT;
 			drawFitted(graphics, font, heading ? line.text().copy().withStyle(ChatFormatting.BOLD) : line.text(),
-					x + (heading ? 4 : 8), lineY, width - (heading ? 8 : 12), heading ? HEADING : 0xFFFFFFFF);
+					x + INSET + (heading ? 2 : 6), lineY, width - 2 * INSET - (heading ? 4 : 10), heading ? HEADING : 0xFFFFFFFF);
 		}
 		if (lines.size() > rows) {
-			int track = GUI_HEIGHT - TITLE_HEIGHT - 4;
 			int bar = Math.max(10, track * rows / lines.size());
-			int barY = y + TITLE_HEIGHT + (track - bar) * scroll / Math.max(1, lines.size() - rows);
-			graphics.fill(x + width - 3, barY, x + width - 1, barY + bar, 0xFFC0C0C0);
+			int barY = y + CONTENT_TOP + (track - bar) * scroll / Math.max(1, lines.size() - rows);
+			int barX = x + width - INSET - 3;
+			graphics.fill(barX, barY, barX + 2, barY + bar, FRAME_LINE);
 		}
+	}
+
+	/** Dark edge, double line, background, head bar with line and diamonds, corner brackets. */
+	private static void drawFrame(GuiGraphicsExtractor graphics, int x, int y, int width, int height) {
+		graphics.fill(x, y, x + width, y + height, EDGE);
+		graphics.outline(x + 1, y + 1, width - 2, height - 2, FRAME_LINE);
+		graphics.outline(x + 2, y + 2, width - 4, height - 4, GAP_DARK);
+		graphics.outline(x + 3, y + 3, width - 6, height - 6, FRAME_DARK);
+		graphics.fill(x + INSET, y + INSET, x + width - INSET, y + height - INSET, BACKGROUND);
+		graphics.fill(x + INSET, y + INSET, x + width - INSET, y + INSET + TITLE_HEIGHT, HEAD);
+		graphics.fill(x + INSET, y + INSET + TITLE_HEIGHT, x + width - INSET, y + INSET + TITLE_HEIGHT + 1, FRAME_LINE);
+		int centerY = y + INSET + TITLE_HEIGHT / 2;
+		diamond(graphics, x + width - INSET - 5, centerY);
+		diamond(graphics, x + width - INSET - 11, centerY);
+		bracket(graphics, x, y, 1, 1);
+		bracket(graphics, x + width - 1, y, -1, 1);
+		bracket(graphics, x, y + height - 1, 1, -1);
+		bracket(graphics, x + width - 1, y + height - 1, -1, -1);
+	}
+
+	/** A diamond 5 pixels wide around (centerX, centerY) with a light middle. */
+	private static void diamond(GuiGraphicsExtractor graphics, int centerX, int centerY) {
+		graphics.fill(centerX, centerY - 2, centerX + 1, centerY + 3, FRAME_LIGHT);
+		graphics.fill(centerX - 2, centerY, centerX + 3, centerY + 1, FRAME_LIGHT);
+		graphics.fill(centerX - 1, centerY - 1, centerX + 2, centerY + 2, FRAME_LIGHT);
+		graphics.fill(centerX, centerY, centerX + 1, centerY + 1, SPARK);
+	}
+
+	/** A corner bracket: an L of 7 pixels, 2 thick, from the corner pixel inwards (dx, dy = 1 or -1), light point inside. */
+	private static void bracket(GuiGraphicsExtractor graphics, int cornerX, int cornerY, int dx, int dy) {
+		block(graphics, cornerX, cornerY, dx, dy, 7, 2, FRAME_LIGHT);
+		block(graphics, cornerX, cornerY, dx, dy, 2, 7, FRAME_LIGHT);
+		block(graphics, cornerX + 2 * dx, cornerY + 2 * dy, dx, dy, 1, 1, SPARK);
+	}
+
+	/** A block of w x h pixels starting at the pixel (px, py) and growing in the direction dx, dy. */
+	private static void block(GuiGraphicsExtractor graphics, int px, int py, int dx, int dy, int w, int h, int color) {
+		int x0 = dx > 0 ? px : px - w + 1;
+		int y0 = dy > 0 ? py : py - h + 1;
+		graphics.fill(x0, y0, x0 + w, y0 + h, color);
+	}
+
+	/** True if the gem types add up to the gem part (else the part is shown as one number). */
+	private static boolean gemsAddUp(Value value) {
+		if (value.gems.isEmpty()) {
+			return false;
+		}
+		double sum = 0;
+		for (GemShare share : value.gems.values()) {
+			sum += share.amount;
+		}
+		return Math.abs(sum - value.parts[GEMS]) <= Math.max(1.0E-3, Math.abs(value.parts[GEMS]) * 0.01);
+	}
+
+	/** Resistance (percent) per gem type from worn armor and shields, like Sockets.resistance. */
+	private static Map<String, GemShare> resistanceShares(Player player, GemBonuses.Special special) {
+		Map<String, GemShare> shares = new LinkedHashMap<>();
+		for (EquipmentSlot slot : EquipmentSlot.values()) {
+			ItemStack stack = player.getItemBySlot(slot);
+			boolean shield = (slot == EquipmentSlot.OFFHAND || slot == EquipmentSlot.MAINHAND) && Shields.isShield(stack);
+			if (slot.getType() != EquipmentSlot.Type.HUMANOID_ARMOR && !shield || BreakProtection.wornOut(stack)) {
+				continue;
+			}
+			double factor = Titanite.factor(stack);
+			for (String id : Sockets.sockets(stack)) {
+				String type = Gems.typeOf(id);
+				if (type == null) {
+					continue;
+				}
+				int cut = Gems.cutOf(id);
+				for (GemValues.Bonus bonus : GemValues.on(id, true)) {
+					if (bonus.kind().special() == special) {
+						shares.computeIfAbsent(type, t -> new GemShare()).add(bonus.amount(cut) * factor, cut);
+					}
+				}
+			}
+		}
+		return shares;
+	}
+
+	/** Gem symbol of the type and cut, then the number in the gem's color. */
+	private static Component gemPart(String type, GemShare share, String number) {
+		return Component.empty().append(icon(GearBalanceClient.gemSymbol(type, share.cut)))
+				.append(GearBalanceClient.gemColored(type, Component.literal(number)));
+	}
+
+	/** A symbol of the socket font with a small gap after it, white with the icon shadow like in tooltips. */
+	private static Component icon(char symbol) {
+		return Component.literal(symbol + ICON_GAP).withStyle(style -> style.withFont(GearBalanceClient.SOCKET_FONT)
+				.withColor(ChatFormatting.WHITE).withShadowColor(GearBalanceClient.ICON_SHADOW));
 	}
 
 	/** Draws text at TEXT_SCALE, smaller if it is still too wide (down to MIN_SCALE), then cut off. */
@@ -390,10 +570,11 @@ final class StatsPanel {
 			int color) {
 		int width = font.width(text);
 		float scale = Math.max(MIN_SCALE, Math.min(TEXT_SCALE, (float) maxWidth / width));
-		Component shown = text;
+		FormattedCharSequence shown = text.getVisualOrderText();
 		if (width * scale > maxWidth) {
-			String plain = font.plainSubstrByWidth(text.getString(), (int) (maxWidth / scale) - font.width("…"));
-			shown = Component.literal(plain + "…").withStyle(text.getStyle());
+			// Cut with the styles kept, so the symbols keep their font
+			FormattedText cut = font.substrByWidth(text, (int) (maxWidth / scale) - font.width("…"));
+			shown = Language.getInstance().getVisualOrder(FormattedText.composite(cut, Component.literal("…")));
 		}
 		graphics.pose().pushMatrix();
 		graphics.pose().translate(x, y + 8 * (1 - scale) / 2);

@@ -667,6 +667,8 @@
 	"gearbalance.options.glow_pulse.tip": "Glow and effects slowly get brighter and darker. OFF: steady brightness. Shields never pulse.",
 	"gearbalance.options.hide_glint": "Hide enchantment glint",
 	"gearbalance.options.hide_glint.tip": "Hides the enchantment glint on pieces with full sockets while the glow outline is on. The glint strength of all items is set by the game itself under Accessibility.",
+	"gearbalance.options.shield_glow_shaders": "Shield glow with shaders",
+	"gearbalance.options.shield_glow_shaders.tip": "With a shader pack (Iris) the soft glow of a shield can flicker. Off: only the frame is shown while shaders are on. Without shaders nothing changes.",
 	"gearbalance.menu.glow": "Glow",
 	"gearbalance.menu.glow.tip": "Glow of full sockets: outline, glow, effects, color, pulse and shield. Only visible to you.",
 	"gearbalance.config.glow.group.effect": "Glow & effects",

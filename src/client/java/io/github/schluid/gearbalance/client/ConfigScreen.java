@@ -307,6 +307,8 @@ public class ConfigScreen extends TipScreen {
 	private static final Toggle EFFECT_SHADOW = effect("effect_shadow", GearConfig.EFFECT_SHADOW);
 	private static final Toggle HIDE_GLINT = option("hide_glint", () -> GearConfig.hideGlint,
 			v -> GearConfig.hideGlint = v, false);
+	private static final Toggle SHIELD_GLOW_SHADERS = option("shield_glow_shaders", () -> GearConfig.shieldGlowShaders,
+			v -> GearConfig.shieldGlowShaders = v, true);
 	private static final Toggle GLOW_PULSE = option("glow_pulse", () -> GearConfig.glowPulse,
 			v -> GearConfig.glowPulse = v, true);
 	private static final Toggle HAND_IDLE = option("hand_idle", () -> GearConfig.handIdle,
@@ -410,7 +412,7 @@ public class ConfigScreen extends TipScreen {
 	private static final Set<Toggle> CLIENT_ONLY = Set.of(SPRINT_FIX, HOTBAR_HIDE, HOTBAR_HIDE_ALL,
 			HOTBAR_HIDE_ARMOR, HOTBAR_HIDE_XP, NAME_COLORS, SHOW_HINTS, TOOLTIP_FRAMES, COMPARE_TOOLTIP,
 			TOOL_DURABILITY, DURABILITY_ALL, PICKUP_DISPLAY, PICKUP_MARKS, PICKUP_RIGHT,
-			HAND_IDLE, DURABILITY_WARNING, INVENTORY_SCALE, OUTLINES, EFFECT_FLAMES, EFFECT_SHADOW, HIDE_GLINT, GLOW_PULSE,
+			HAND_IDLE, DURABILITY_WARNING, INVENTORY_SCALE, OUTLINES, EFFECT_FLAMES, EFFECT_SHADOW, HIDE_GLINT, SHIELD_GLOW_SHADERS, GLOW_PULSE,
 			ARMOR_BAR, HD_ARMOR, ARMOR_COLORS, ARMOR_CRACKS, ARMOR_DARKEN, ARMOR_BLINK, ARMOR_BROKEN, HOTBAR_POP, HOTBAR_LOW_GLOW,
 			ITEM_NAME_BOUNCE, XP_ANIMATED, HD_HEARTS, HEART_RING, HD_FOOD,
 			SATURATION_GOLD, HD_HUD, SMOOTH_SCROLL, HOTBAR_GLIDE);
@@ -773,7 +775,8 @@ public class ConfigScreen extends TipScreen {
 								glowRow("shield_frame", () -> GearConfig.shieldFrame, GearConfig.DEFAULT_SHIELD_FRAME,
 										0, 100, v -> GearConfig.shieldFrame = v, "%", OUTLINES),
 								glowRow("shield_glow", () -> GearConfig.shieldGlow, GearConfig.DEFAULT_SHIELD_GLOW,
-										0, 100, v -> GearConfig.shieldGlow = v, "%", OUTLINES)), null));
+										0, 100, v -> GearConfig.shieldGlow = v, "%", OUTLINES),
+								switchRow(SHIELD_GLOW_SHADERS, OUTLINES)), null));
 			}
 			case VIEW -> {
 				// Grouped by where it shows: tooltips, picking up, the screen while playing, the inventory
