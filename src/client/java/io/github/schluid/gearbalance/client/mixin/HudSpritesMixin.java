@@ -5,6 +5,8 @@ import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import io.github.schluid.gearbalance.client.HudStyle;
 import io.github.schluid.gearbalance.client.SmoothScroll;
 import com.mojang.renderpearl.api.pipeline.RenderPipeline;
+import io.github.schluid.gearbalance.client.HotbarHide;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.Hud;
@@ -27,7 +29,14 @@ public abstract class HudSpritesMixin {
 			target = "Lnet/minecraft/client/gui/contextualbar/ContextualBar;extractExperienceLevel(Lnet/minecraft/client/gui/GuiGraphicsExtractor;Lnet/minecraft/client/gui/Font;I)V"))
 	private void gearbalance$hdLevel(GuiGraphicsExtractor graphics, Font font, int level, Operation<Void> original) {
 		if (HudStyle.active()) {
+			// The HD digits replace the vanilla call, so the hotbar hiding (which wraps that call) may not reach them:
+			// move them here unless the hiding has already moved everything
+			int down = graphics.pose().m21 == 0
+					? HotbarHide.experienceDown(Minecraft.getInstance().getDeltaTracker().getGameTimeDeltaPartialTick(false)) : 0;
+			graphics.pose().pushMatrix();
+			graphics.pose().translate(0, down);
 			HudStyle.level(graphics, level);
+			graphics.pose().popMatrix();
 			return;
 		}
 		original.call(graphics, font, level);

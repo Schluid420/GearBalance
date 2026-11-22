@@ -82,21 +82,7 @@ public final class HotbarHide {
 
 	private static HudElement moved(HudElement element, Part part) {
 		return (graphics, tick) -> {
-			float amount = Mth.lerp(tick.getGameTimeDeltaPartialTick(false), hiddenBefore, hidden);
-			int down = Math.round(amount * switch (part) {
-				case HOTBAR -> HOTBAR_OUT;
-				case BAR -> GearConfig.hotbarHideAll ? ALL_OUT : HOTBAR;
-				// Armor and experience can go away on their own while the other bars only move down
-				case ARMOR -> GearConfig.hotbarHideAll || GearConfig.hotbarHideArmor ? ALL_OUT : HOTBAR;
-				case EXPERIENCE -> GearConfig.hotbarHideAll || GearConfig.hotbarHideXp ? ALL_OUT : HOTBAR;
-				case TEXT, ITEM_NAME -> HOTBAR;
-			});
-			// The name of the held item sits one row higher, so it does not cover the armor bar
-			if (part == Part.ITEM_NAME) {
-				down -= ITEM_NAME_UP;
-			}
-			// Everything at the bottom a bit higher, so screens that cut off the edge show it whole
-			down -= HUD_LIFT;
+			int down = down(part, tick.getGameTimeDeltaPartialTick(false));
 			if (down == 0) {
 				element.extractRenderState(graphics, tick);
 				return;
@@ -106,6 +92,30 @@ public final class HotbarHide {
 			element.extractRenderState(graphics, tick);
 			graphics.pose().popMatrix();
 		};
+	}
+
+	/** Pixels the experience bar and level number are drawn lower right now. */
+	public static int experienceDown(float partialTick) {
+		return down(Part.EXPERIENCE, partialTick);
+	}
+
+	private static int down(Part part, float partialTick) {
+		float amount = Mth.lerp(partialTick, hiddenBefore, hidden);
+		int down = Math.round(amount * switch (part) {
+			case HOTBAR -> HOTBAR_OUT;
+			case BAR -> GearConfig.hotbarHideAll ? ALL_OUT : HOTBAR;
+			// Armor and experience can go away on their own while the other bars only move down
+			case ARMOR -> GearConfig.hotbarHideAll || GearConfig.hotbarHideArmor ? ALL_OUT : HOTBAR;
+			case EXPERIENCE -> GearConfig.hotbarHideAll || GearConfig.hotbarHideXp ? ALL_OUT : HOTBAR;
+			case TEXT, ITEM_NAME -> HOTBAR;
+		});
+		// The name of the held item sits one row higher, so it does not cover the armor bar
+		if (part == Part.ITEM_NAME) {
+			down -= ITEM_NAME_UP;
+		}
+		// Everything at the bottom a bit higher, so screens that cut off the edge show it whole
+		down -= HUD_LIFT;
+		return down;
 	}
 
 	private static void tick(Minecraft minecraft) {

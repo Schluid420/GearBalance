@@ -36,6 +36,12 @@ public final class BagPanel {
 		return player == null || closed ? 0 : Bags.shownRows(player);
 	}
 
+	/** Rows the window makes room for: those of the worn bag, open or closed, so opening and closing it doesn't move the window. */
+	public static int roomRows() {
+		Player player = Minecraft.getInstance().player;
+		return player == null ? 0 : Bags.shownRows(player);
+	}
+
 	/** Height of the panel with border and gap, 0 without a bag. */
 	private static int height(int rows) {
 		return rows == 0 ? 0 : rows * 18 + 10;

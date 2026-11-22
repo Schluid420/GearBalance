@@ -37,6 +37,10 @@ final class CompareTooltip {
 
 	static void add(ItemStack stack, List<Component> lines) {
 		Minecraft minecraft = Minecraft.getInstance();
+		// The creative search builds its index on another thread, where keys can't be read: no comparison there
+		if (!minecraft.isSameThread()) {
+			return;
+		}
 		LocalPlayer player = minecraft.player;
 		if (!GearConfig.enabled || !GearConfig.compareTooltip || player == null || stack.isEmpty()) {
 			return;

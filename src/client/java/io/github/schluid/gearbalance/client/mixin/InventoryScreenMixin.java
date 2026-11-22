@@ -30,7 +30,7 @@ public abstract class InventoryScreenMixin {
 
 	@Inject(method = "containerTick", at = @At("TAIL"))
 	private void gearbalance$followBag(CallbackInfo ci) {
-		if (BagPanel.rows() != BagPanel.layoutRows) {
+		if (BagPanel.roomRows() != BagPanel.layoutRows) {
 			InventoryScreen self = (InventoryScreen) (Object) this;
 			self.resize(self.width, self.height);
 		}

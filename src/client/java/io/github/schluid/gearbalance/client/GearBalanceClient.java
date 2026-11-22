@@ -154,6 +154,7 @@ public class GearBalanceClient implements ClientModInitializer {
 			ShieldTooltip.add(stack, lines);
 			UpgradeTooltip.add(stack, lines);
 			GemTooltips.add(stack, lines);
+			MaterialHints.add(stack, lines);
 			CompareTooltip.add(stack, lines);
 			if (GearConfig.showHints && MasterPlan.PLAN != null && stack.is(MasterPlan.PLAN)) {
 				lines.add(Component.translatable("gearbalance.master_plan.tip").withStyle(ChatFormatting.GRAY));
@@ -271,7 +272,14 @@ public class GearBalanceClient implements ClientModInitializer {
 
 	/** Adds a long text as grey tooltip lines of at most TOOLTIP_WIDTH pixels. */
 	private static void addWrapped(List<Component> lines, Component text) {
-		for (FormattedText part : Minecraft.getInstance().font.getSplitter().splitLines(text, TOOLTIP_WIDTH, Style.EMPTY)) {
+		Minecraft minecraft = Minecraft.getInstance();
+		// The creative search builds its index on another thread, where the font can't be measured:
+		// there the whole text as one line is enough
+		if (!minecraft.isSameThread()) {
+			lines.add(text.copy().withStyle(ChatFormatting.GRAY));
+			return;
+		}
+		for (FormattedText part : minecraft.font.getSplitter().splitLines(text, TOOLTIP_WIDTH, Style.EMPTY)) {
 			lines.add(Component.literal(part.getString()).withStyle(ChatFormatting.GRAY));
 		}
 	}

@@ -18,7 +18,7 @@ public abstract class AbstractContainerScreenMixin {
 	@Inject(method = "init", at = @At("TAIL"))
 	private void gearbalance$makeRoomForBag(CallbackInfo ci) {
 		if ((Object) this instanceof InventoryScreen) {
-			int rows = BagPanel.rows();
+			int rows = BagPanel.roomRows();
 			BagPanel.layoutRows = rows;
 			topPos += BagPanel.shift(rows);
 		}
