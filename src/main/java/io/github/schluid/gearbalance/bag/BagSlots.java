@@ -19,7 +19,7 @@ public final class BagSlots {
 	public static final Identifier EMPTY_ICON = Identifier.fromNamespaceAndPath(GearBalance.MOD_ID, "container/slot/bag");
 	/** Set by the client: the slots are hidden (creative inventory, which can't place them). */
 	public static BooleanSupplier hidden = () -> false;
-	/** Set by the client: the bag was closed with a right click on it, its rows are hidden while it stays worn. */
+	/** Set by the client: the bag was closed with a left click on it, its rows are hidden while it stays worn. */
 	public static BooleanSupplier closed = () -> false;
 
 	/** Left of the item in a bag column: 3 columns stick out on each side of the inventory. */

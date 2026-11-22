@@ -5,6 +5,21 @@ All notable changes to this project are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.1] - 2026-11-22
+
+### Fixed
+
+- Titanium spear: the missing item models caused a missing texture (purple-black) in the inventory and in the hand.
+- Gear sets: a set saved the off hand too, so it could hold two helmets. It now holds only the four worn armor pieces; old sets drop the off hand.
+- Gear sets: equal pieces in the inventory got the set number too. A saved piece now gets its own id, so only the worn piece belongs to the set. Sets saved in 1.1.0 need to be saved once more.
+- Gear sets: the message was hidden behind the inventory window and is now shown above it.
+- Bags: a left click with an empty hand on the worn bag took it off instead of closing its rows.
+- HD HUD: the lines of the experience bar were see-through and are now solid.
+
+### Added
+
+- Gear sets: Ctrl + click on a set button deletes the set. The set numbers have their own colors (1 yellow, 2 green, 3 red) on the buttons and on the items.
+
 ## [1.1.0] - 2026-11-21
 
 **Updating from 1.0.1:** your settings, profiles and exported files are kept. Every new feature starts switched off. The new preset values only apply once you load a preset again, and loading one replaces your current values, so save them in a profile of your own first.

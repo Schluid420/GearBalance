@@ -117,7 +117,7 @@ Books are never added, removed or swapped, so mods that control where enchanted 
 
 - **Sprint fix:** letting go of the sprint key stops sprinting at once (sprint mode "Hold").
 - **Tool refill:** a broken tool or weapon is replaced from the inventory.
-- **Gear sets:** three buttons left of the inventory save and put on armor and off hand, also from the worn bag.
+- **Gear sets:** three buttons left of the inventory save and put on the four worn armor pieces, also from the worn bag. Ctrl + click deletes a set.
 - **Trash bin:** a slot in the top right of the inventory. The last item put in stays there and can be taken out again, putting in a new one deletes the old one.
 - **Day and night length:** own length of day and night in real minutes (1 to 120 each), for all players on the server.
 - **Death:** drops and experience land in one pile at the death point (no despawn, or after 1 to 30 minutes), dying in lava or the void puts the pile on the last safe block, an adjustable share of all experience points drops (default 80 %), explosions don't destroy the drops, armor, hotbar and off hand can be kept with a small durability loss (default 10 %, never breaks), and a chat message tells where the pile lies. Every part has its own switch, the server decides.

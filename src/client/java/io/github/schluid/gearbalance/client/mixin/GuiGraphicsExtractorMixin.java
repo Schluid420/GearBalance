@@ -3,6 +3,7 @@ package io.github.schluid.gearbalance.client.mixin;
 import io.github.schluid.gearbalance.client.ComfortClient;
 import io.github.schluid.gearbalance.client.PickupDisplay;
 import io.github.schluid.gearbalance.comfort.BreakProtection;
+import io.github.schluid.gearbalance.comfort.Loadouts;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.world.item.ItemStack;
@@ -37,7 +38,12 @@ public abstract class GuiGraphicsExtractorMixin {
 		graphics.pose().pushMatrix();
 		graphics.pose().translate(x + 1, y + 1);
 		graphics.pose().scale(0.5F, 0.5F);
-		graphics.text(font, numbers, 0, 0, 0xFFFFFF55, true);
+		int offset = 0;
+		for (char digit : numbers.toCharArray()) {
+			String number = String.valueOf(digit);
+			graphics.text(font, number, offset, 0, 0xFF000000 | Loadouts.rgb(digit - '1'), true);
+			offset += font.width(number);
+		}
 		graphics.pose().popMatrix();
 	}
 }

@@ -56,6 +56,8 @@ public final class ComfortClient {
 		});
 		ClientPlayNetworking.registerGlobalReceiver(Loadouts.SetsPayload.TYPE,
 				(payload, context) -> loadouts = payload.sets());
+		ClientPlayNetworking.registerGlobalReceiver(Loadouts.MessagePayload.TYPE,
+				(payload, context) -> LoadoutButtons.show(Loadouts.text(payload.kind(), payload.set(), payload.count())));
 		ClientPlayConnectionEvents.DISCONNECT.register((handler, minecraft) -> loadouts = List.of());
 		LoadoutButtons.register();
 		TrashButton.register();
